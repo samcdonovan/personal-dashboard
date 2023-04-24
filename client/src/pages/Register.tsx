@@ -1,9 +1,12 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
+/* Register page functional component; allows user to register an
+account for the dashboard */
 function Register() {
     return (
         <div className="login-container">
-            <form className="Alogin-form">
+            <form className="login-form">
                 <div className="content">
                     <div>
                         <input
@@ -36,9 +39,10 @@ function Register() {
                     <p>
                         Forgot <a href="#">username or password?</a>
                     </p>
-                    <p>
-                        New to the challenge? <a href="#">Sign up</a>
-                    </p>
+
+                    {/* link back to login page for if they already have an account */}
+                    <p>Already have an account? <Link to="/login">Sign up</Link></p>
+
                 </div>
             </form>
         </div>

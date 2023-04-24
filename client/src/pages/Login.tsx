@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
+/* Login page functional component; 
+this will be the first page the user sees */
 function Login() {
     return (
         <div className="login-container">
@@ -23,12 +25,12 @@ function Login() {
                             Login
                         </button>
                     </div>
-                    <p>
-                        Forgot <a href="#">username or password?</a>
-                    </p>
-                    <p>
-                        New to the challenge? <Link to="/register">Sign up</Link>
-                    </p>
+
+                    {/* link to forgotten username or password form (may add later) */}
+                    <p>Forgot <a href="#">username or password?</a></p>
+
+                    {/* link to the Register page */}
+                    <p>New to the challenge? <Link to="/register">Sign up</Link></p>
                 </div>
             </form>
         </div>
