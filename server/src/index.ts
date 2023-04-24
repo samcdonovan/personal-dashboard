@@ -3,6 +3,7 @@ import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import axios from 'axios';
 import dotenv from 'dotenv';
+import Parser from 'rss-parser';
 import * as Utils from './utils.js';
 
 dotenv.config(); // configure environment variables
@@ -62,6 +63,32 @@ app.get("/team/:team", (req: Request, res: Response) => {
         .catch((error) => {
             console.error("Sports team GET request error: " + error);
         });
+});
+
+/* express GET path for BBC news data */
+app.get("/news", async (req: Request, res: Response) => {
+
+
+    const parser: Parser = new Parser();
+    const newsUrl = "https://feeds.bbci.co.uk/news/england/rss.xml";
+
+    // fetch(newsUrl)
+    //   .then(response => response.text())
+    //   .then(str => new DOMParser().parseFromString(str, "text/xml"))
+    //   .then(data => console.log(data))
+    const feed = await parser.parseURL(newsUrl);
+    console.log(feed.title);
+    console.log(feed);
+
+    res.send(feed);
+    //const body = await parser.parseURL(feed.items[0].link);
+    /*try {
+      const body = await parser.parseURL(feed.items[0].image);
+      //const body = await parser.parseURL(feed.items[0].link + "/rss.xml");
+    } catch (error) {
+      console.log(error);
+    }*/
+
 });
 
 /* express GET path for clothes data */
