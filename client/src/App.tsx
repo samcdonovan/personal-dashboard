@@ -10,7 +10,7 @@ import News from "./pages/News";
 
 function App() {
   return (
-    <div className="app">
+    <div className="App">
 
       <BrowserRouter>
         <Routes>

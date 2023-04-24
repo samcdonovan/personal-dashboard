@@ -1,0 +1,21 @@
+{
+    "name": "personal-dashboard",
+    "version": "1.0.0",
+    "description": "<h1 align=\"center\">Personal Dashboard</h1>",
+    "scripts": {
+        "client": "cd client && npm run client",
+        "server": "nodemon --esm --quiet server/src/index.ts",
+        "dev": "concurrently \"npm run server\" \"npm run client\"",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "postinstall": "concurrently \"cd client && npm install\" \"cd server && npm install"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "concurrently": "^8.0.1"
+    },
+    "dependencies": {
+        "postinstall": "^0.8.0"
+    }
+}
