@@ -2,12 +2,39 @@
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import axios from 'axios';
+import dotenv from 'dotenv';
 import * as Utils from './utils.js';
+
+dotenv.config(); // configure environment variables
 
 const app: Express = express();
 
 app.use(cors()); // allow CORS
 app.use(express.json());
+app.get("/weather/:lat&:lon"), (req: Request, res: Response) => {
+
+    /* build URL for OpenWeather GET request using query paramaters */
+    const url = "https://api.openweathermap.org/data/2.5/weather?lat="
+        + req.params.lat + "&lon=" + req.params.longitude + "&appid=" + process.env.WEATHER_SECRET_KEY
+        + "&units=metric";
+
+    axios.get(url)
+        .then((res: any) => {
+
+            /* send relevant data through response */
+            res.send({
+                status: res.data.cod,
+                type: res.data.weather[0].main,
+                temp: res.data.main.temp,
+                location: res.data.name
+            });
+        })
+        /* catch and log error */
+        .catch((error) => {
+            console.error("Weather GET request error: " + error);
+        });
+}
+
 
 /* express GET path for sports team data. Takes one parameter which is the teams name */
 app.get("/team/:team", (req: Request, res: Response) => {
@@ -32,7 +59,7 @@ app.get("/team/:team", (req: Request, res: Response) => {
         })
         /* catch and log error */
         .catch((error) => {
-            console.error(error);
+            console.error("Sports team GET request error: " + error);
         });
 });
 
@@ -40,7 +67,7 @@ app.get("/team/:team", (req: Request, res: Response) => {
 app.get("/clothes", (req: Request, res: Response) => {
 
     /* use axios to run a GET request on the clothing data */
-    axios.get("https://therapy-box.co.uk/hackathon/clothing-api.php?username=swapnil")
+    axios.get("https://therapy-box.co.uk/hackathon/clothing-api.php?username=" + process.env.CLOTHES_USERNAME)
 
         /* return response from axios request */
         .then(function (response: any) {
@@ -69,7 +96,7 @@ app.get("/clothes", (req: Request, res: Response) => {
         })
         /* catch errors with API request */
         .catch(function (error: any) {
-            console.log(error);
+            console.log("Clothes GET request error: " + error);
         })
 });
 
