@@ -9,8 +9,31 @@ import Photo from '../components/Photo';
 a welcome message and the users profile picture */
 function Dashboard() {
 
+    const [weather, setWeather] = useState({
+        status: 404,
+        type: "Oops!",
+        temp: Infinity,
+        location: "Something went wrong!"
+    });
+
     const [clothesData, setClothesData] = useState(Array<ClothingItem>);
+
     useEffect(() => {
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+
+                /* fetch weather data from localhost rseource using Geolocation coordinates */
+                fetch("http://localhost:8080/weather/" + position.coords.latitude
+                    + "&" + position.coords.longitude)
+                    .then((res) => res.json())
+                    .then((data) => {
+                        setWeather(data);
+                    })
+            });
+        } else {
+            console.log("Geolocation is not supported by this browser")
+        }
 
         ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -19,7 +42,6 @@ function Dashboard() {
             .then((data) => {
                 setClothesData(data);
             });
-
     }, [])
 
     return (
@@ -28,6 +50,17 @@ function Dashboard() {
             <h1>Good day User</h1>
             <div className="content dashboard">
                 <Widget title="Weather">
+                    {weather.status !== 404 ?
+                        <div>
+                            <p>{weather.type}</p>
+                            <p>{weather.temp}</p>
+                            <p>{weather.location}</p>
+                        </div>
+                        :
+                        <div>
+                            <p>Loading...</p>
+                        </div>
+                    }
                 </Widget>
                 <Widget to="/dashboard/news" title="News">
 
