@@ -2,7 +2,7 @@
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import axios from 'axios';
-import * as Utils from './utils';
+import * as Utils from './utils.js';
 
 const app: Express = express();
 
