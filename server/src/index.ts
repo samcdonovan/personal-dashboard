@@ -45,12 +45,14 @@ app.get("/weather/:lat&:lon", (req: Request, res: Response) => {
 
 /* express GET path for sports team data. Takes one parameter which is the teams name */
 app.get("/team/:team", (req: Request, res: Response) => {
-    console.log(req.socket.remoteAddress);
-    console.log(req.headers.host);
-    let host: string = req.socket.remoteAddress.replace(/^.*:/, '');
+    // console.log(req.socket.remoteAddress);
+    // console.log(req.headers.host);
+    // let host: string = req.socket.remoteAddress.replace(/^.*:/, '');
+    // console.log(host);
 
     /* use function from Utils.ts to parse the CSV file */
-    let dataPath = (host === "1" ? "" : "/server") + "/assets/data/I1.csv";
+    let dataPath = (req.headers.host.includes("localhost") ? "/server" : "") + "/assets/data/I1.csv";
+
     Utils.parseCSVFile(__dirname + dataPath)
         .then((result) => {
             let team: string = req.params.team;
