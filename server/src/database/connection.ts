@@ -3,9 +3,10 @@ import pg from 'pg';
 import path, { parse } from 'path';
 
 const __dirname = path.resolve();
-dotenv.config({ path: __dirname + '/server/.env' }); // load environment variables
+const envPath = __dirname.includes('C:\\Users\\') ? '/server' : '';
+dotenv.config({ path: __dirname + envPath + '.env' }); // load environment variables
 
-console.log(__dirname + './env')
+console.log(__dirname + '/.env')
 
 let connectionUrl: string = "postgres://" + process.env.PG_USER + ":"
     + process.env.PG_PASSWORD + "@" + process.env.PG_HOST;
