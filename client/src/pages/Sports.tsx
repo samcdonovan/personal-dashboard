@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { searchForTeam } from '../utils/ProxyAPI';
 
 /* Sports page functional component; allows user to search for an Italian team
 and then displays which teams their team won against */
@@ -14,20 +15,6 @@ function Sports() {
         setTeam(event.target.value);
     }
 
-    /**
-     * Fetches team data from the localhost proxy server. Uses the
-     * 'team' state (which is set using the input field) to retrieve all
-     * of the winning games for the inputt team.
-     */
-    function submitTeam() {
-        fetch("http://localhost:8080/team/" + team)
-            .then((res) => res.json())
-            .then((data) => {
-                setData(data);
-                console.log(data);
-            })
-    }
-
     return (
         <div>
             <div>
@@ -38,7 +25,7 @@ function Sports() {
                     onChange={handleChange}
                 />
             </div>
-            <button onClick={submitTeam}></button>
+            <button onClick={() => searchForTeam(team, setData)}></button>
 
             {data.length > 0 ?
 

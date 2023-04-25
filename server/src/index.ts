@@ -45,9 +45,13 @@ app.get("/weather/:lat&:lon", (req: Request, res: Response) => {
 
 /* express GET path for sports team data. Takes one parameter which is the teams name */
 app.get("/team/:team", (req: Request, res: Response) => {
+    console.log(req.socket.remoteAddress);
+    console.log(req.headers.host);
+    let host: string = req.socket.remoteAddress.replace(/^.*:/, '');
 
     /* use function from Utils.ts to parse the CSV file */
-    Utils.parseCSVFile(__dirname + '/assets/data/I1.csv')
+    let dataPath = (host === "1" ? "" : "/server") + "/assets/data/I1.csv";
+    Utils.parseCSVFile(__dirname + dataPath)
         .then((result) => {
             let team: string = req.params.team;
             let matches: Array<Team> = result.filter(function (item: Team) {
@@ -148,7 +152,6 @@ app.post('/uploadImage', (req: Request, res: Response) => {
 
     uploadPath = __dirname + relativePath + "/" + file.name;
 
-    // Use the mv() method to place the file somewhere on your server
     file.mv(uploadPath, function (err) {
         if (err)
             return res.status(500).send(err);
