@@ -20,7 +20,7 @@ app.use(fileUpload());
 
 /* express GET path for weather data. Takes two paramaters: latitude and longitude */
 app.get("/weather/:lat&:lon", (req: Request, res: Response) => {
-
+    console.log(process.env.WEATHER_SECRET_KEY);
     /* build URL for OpenWeather GET request using query paramaters */
     const url = "https://api.openweathermap.org/data/2.5/weather?lat="
         + req.params.lat + "&lon=" + req.params.lon + "&appid=" + process.env.WEATHER_SECRET_KEY
