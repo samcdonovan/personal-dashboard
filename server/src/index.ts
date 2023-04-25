@@ -47,7 +47,7 @@ app.get("/weather/:lat&:lon", (req: Request, res: Response) => {
 app.get("/team/:team", (req: Request, res: Response) => {
 
     /* use function from Utils.ts to parse the CSV file */
-    Utils.parseCSVFile("./server/data/I1.csv")
+    Utils.parseCSVFile("../data/I1.csv")
         .then((data) => {
             let team: string = req.params.team;
             let matches: Array<Team> = data.filter(function (item: Team) {
