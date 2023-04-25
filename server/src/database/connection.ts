@@ -4,9 +4,10 @@ import path, { parse } from 'path';
 
 const __dirname = path.resolve();
 const envPath = __dirname.includes('C:\\Users\\') ? '/server' : '';
-dotenv.config({ path: __dirname + envPath + '.env' }); // load environment variables
 
-console.log(__dirname + '/.env')
+dotenv.config({ path: __dirname + envPath + '/.env' }); // load environment variables
+
+console.log(__dirname + envPath + '/.env')
 
 let connectionUrl: string = "postgres://" + process.env.PG_USER + ":"
     + process.env.PG_PASSWORD + "@" + process.env.PG_HOST;
@@ -15,7 +16,7 @@ let connectionUrl: string = "postgres://" + process.env.PG_USER + ":"
 must include the external URL for the Render PG database */
 connectionUrl += __dirname.includes('C:\\Users\\') ? process.env.PG_EXTERNAL_URL : "";
 
-connectionUrl += "/" + process.env.PG_DATABASE + "?ssl=true";
+connectionUrl += "/" + process.env.PG_DATABASE;
 
 console.log(connectionUrl)
 
