@@ -1,7 +1,6 @@
 
 const host = window.location.hostname == "localhost" ? "http://localhost:8080" : "https://personal-dashboard-proxy.onrender.com";
 
-
 export function getWeather(setWeather: Function) {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -66,7 +65,7 @@ export function handleImageUpload(event: any, setImgSrc: Function) {
    * of the winning games for the inputt team.
    */
 export function searchForTeam(team: string, setData: Function) {
-    fetch("http://localhost:8080/team/" + team)
+    fetch(host + "/team/" + team)
         .then((res) => res.json())
         .then((data) => {
             setData(data);
