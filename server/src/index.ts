@@ -50,7 +50,7 @@ app.get("/team/:team", (req: Request, res: Response) => {
     /*axios.get("http://www.football-data.co.uk/mmz4281/1718/I1.csv")
         .then((data) => {
             Utils.parseCSV(data)*/
-    Utils.parseCSVFile('./assets/I1.CSV')
+    Utils.parseCSVFile('assets/I1.CSV')
         .then((result) => {
             let team: string = req.params.team;
             let matches: Array<Team> = result.filter(function (item: Team) {
