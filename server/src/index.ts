@@ -4,14 +4,19 @@ import cors from 'cors';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import Parser from 'rss-parser';
+import fileUpload from 'express-fileupload';
+import path from 'path'; // global install?
+import fs from 'fs';
 import * as Utils from './utils.js';
 
 dotenv.config(); // configure environment variables
+const __dirname = path.resolve();
 
 const app: Express = express();
 
 app.use(cors()); // allow CORS
 app.use(express.json());
+app.use(fileUpload());
 
 /* express GET path for weather data. Takes two paramaters: latitude and longitude */
 app.get("/weather/:lat&:lon", (req: Request, res: Response) => {
@@ -126,6 +131,32 @@ app.get("/clothes", (req: Request, res: Response) => {
         .catch(function (error: any) {
             console.log("Clothes GET request error: " + error);
         })
+});
+
+app.post('/uploadImage', (req: Request, res: Response) => {
+    let file: fileUpload.UploadedFile;
+    let uploadPath;
+
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    file = req.files.uploadedPhoto as fileUpload.UploadedFile;
+
+    let publicPath: string = '/images/uploaded/' + req.body.user;
+    let relativePath: string = '/client/public' + publicPath;
+
+    if (!fs.existsSync(__dirname + relativePath)) {
+        fs.mkdirSync(__dirname + relativePath)
+    }
+
+    uploadPath = __dirname + relativePath + "/" + file.name;
+
+    console.log(uploadPath);
+    // Use the mv() method to place the file somewhere on your server
+    file.mv(uploadPath, function (err) {
+        if (err)
+            return res.status(500).send(err);
+
+        res.send({ path: publicPath + "/" + file.name });
+    });
 });
 
 /* listen on port 8080 */
