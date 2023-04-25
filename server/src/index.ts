@@ -47,21 +47,6 @@ app.get("/weather/:lat&:lon", (req: Request, res: Response) => {
 app.get("/team/:team", (req: Request, res: Response) => {
 
     /* use function from Utils.ts to parse the CSV file */
-    /*axios.get("http://www.football-data.co.uk/mmz4281/1718/I1.csv")
-        .then((data) => {
-            Utils.parseCSV(data)*/
-    console.log(__dirname);
-    fs.readdir(__dirname + '/assets/data/', function (err, files) {
-        //handling error
-        if (err) {
-            return console.log('Unable to scan directory: ' + err);
-        }
-        //listing all files using forEach
-        files.forEach(function (file) {
-            // Do whatever you want to do with the file
-            console.log(file);
-        });
-    });
     Utils.parseCSVFile(__dirname + '/assets/data/I1.csv')
         .then((result) => {
             let team: string = req.params.team;
@@ -78,7 +63,6 @@ app.get("/team/:team", (req: Request, res: Response) => {
             })
 
             res.send(matches);
-
         })
         /* catch and log error */
         .catch((error) => {
