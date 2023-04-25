@@ -17,6 +17,7 @@ must include the external URL for the Render PG database */
 connectionUrl += __dirname.includes('C:\\Users\\') ? process.env.PG_EXTERNAL_URL : "";
 
 connectionUrl += "/" + process.env.PG_DATABASE;
+connectionUrl += __dirname.includes('C:\\Users\\') ? "?ssl=true" : "";
 
 console.log(connectionUrl)
 
@@ -35,16 +36,26 @@ async function createTable() {
 }
 
 export async function createNewUser(username: string, email: string, password: string) {
+
     const client = new pg.Client(connectionUrl);
 
     client.connect((error) => {
         if (error) console.log(error);
     });
 
-    const res = await client.query("INSERT INTO public.users (username, email, password, profile_picture) " +
-        "VALUES('" + username + "', '" + email + "', '" + password + "', null)");
+    try {
+        const res = await client.query("INSERT INTO public.users (username, email, password, profile_picture) " +
+            "VALUES('" + username + "', '" + email + "', '" + password + "', null)");
 
-    await client.end();
+        await client.end();
+
+        return 201;
+    } catch (error) {
+        console.log("Database error: " + error);
+        return 409;
+    } finally {
+        await client.end();
+    }
 }
 
 export async function checkLogin(username: string, password: string) {
@@ -54,14 +65,16 @@ export async function checkLogin(username: string, password: string) {
         if (error) console.log(error);
     });
 
-    const res = await client.query("SELECT user_id, username, profile_picture FROM public.users " +
-        "WHERE(username='" + username + "' AND password='" + password + "')");
+    try {
+        const res = await client.query("SELECT user_id, username, profile_picture FROM public.users " +
+            "WHERE(username='" + username + "' AND password='" + password + "')");
 
-    console.log(res.rows)
-
-    await client.end();
-
-    return res.rows;
+        return res.rows;
+    } catch (error) {
+        console.log("Database error: " + error);
+    } finally {
+        await client.end();
+    }
 
 }
 

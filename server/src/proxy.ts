@@ -183,6 +183,19 @@ app.post("/login", (req: Request, res: Response) => {
         });
 });
 
+app.post("/register", (req: Request, res: Response) => {
+    const credentials = req.body;
+
+    Database.createNewUser(credentials.username, credentials.email, credentials.password)
+        .then((data: any) => {
+            console.log(data);
+            res.send({ data });
+        })
+        .catch((error: any) => {
+            console.log("Register POST request error: " + error);
+        });
+});
+
 /* listen on port 8080 */
 const PORT = 8080;
 app.listen(PORT, () => {

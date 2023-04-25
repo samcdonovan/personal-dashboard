@@ -91,3 +91,23 @@ export function login(username: string, password: string, setLoginData: Function
             console.error(error)
         })
 }
+
+export function register(username: string, email: string,
+    password: string, setRegisterStatus: Function) {
+
+    fetch(host + "/register", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ username: username, email: email, password: password })
+    })
+        .then(response => response.json())
+        .then(data => {
+            setRegisterStatus(data.data);
+        })
+        .catch(error => {
+            console.error(error)
+        })
+}
