@@ -5,7 +5,7 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import Parser from 'rss-parser';
 import fileUpload from 'express-fileupload';
-import path from 'path'; // global install?
+import path, { parse } from 'path'; // global install?
 import fs from 'fs';
 import * as Utils from './utils.js';
 
@@ -47,10 +47,13 @@ app.get("/weather/:lat&:lon", (req: Request, res: Response) => {
 app.get("/team/:team", (req: Request, res: Response) => {
 
     /* use function from Utils.ts to parse the CSV file */
-    Utils.parseCSVFile("../data/I1.csv")
+    /*axios.get("http://www.football-data.co.uk/mmz4281/1718/I1.csv")
         .then((data) => {
+            Utils.parseCSV(data)*/
+    Utils.parseCSVFile('./assets/I1.CSV')
+        .then((result) => {
             let team: string = req.params.team;
-            let matches: Array<Team> = data.filter(function (item: Team) {
+            let matches: Array<Team> = result.filter(function (item: Team) {
                 return (item.HomeTeam == team && item.FTR == "H")
                     || (item.AwayTeam == team && item.FTR == "A");
             }).map(function (item: Team) {
@@ -63,6 +66,7 @@ app.get("/team/:team", (req: Request, res: Response) => {
             })
 
             res.send(matches);
+
         })
         /* catch and log error */
         .catch((error) => {
@@ -128,7 +132,7 @@ app.get("/clothes", (req: Request, res: Response) => {
             return res.send(clothingData); // send data through response
         })
         /* catch errors with API request */
-        .catch(function (error: any) {
+        .catch((error: any) => {
             console.log("Clothes GET request error: " + error);
         })
 });
@@ -137,7 +141,6 @@ app.post('/uploadImage', (req: Request, res: Response) => {
     let file: fileUpload.UploadedFile;
     let uploadPath;
 
-    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     file = req.files.uploadedPhoto as fileUpload.UploadedFile;
 
     let publicPath: string = '/images/uploaded/' + req.body.user;
