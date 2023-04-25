@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import ImageUploader from './ImageUploader';
 
 /* Interface for Photo component props */
 interface PhotoProps {
     size: string,
     src?: string,
-    addImg?: boolean
+    addImg?: boolean,
+    callback?: Function
 }
 
 /**
@@ -14,6 +16,19 @@ interface PhotoProps {
  * @returns React component
  */
 function Photo(props: PhotoProps) {
+    const [newSrc, setNewSrc] = useState("");
+    const [currentSrc, setCurrentSrc] = useState<string>();
+
+    useEffect(() => {
+        if (!newSrc) setCurrentSrc(props.src);
+        console.log(currentSrc)
+    }, [currentSrc]);
+
+    useEffect(() => {
+        //if (newSrc) setCurrentSrc(newSrc);
+        if (props.callback) props.callback(true);
+    }, [newSrc]);
+
     return (
 
         <div className={props.size + "-img"}>
@@ -22,8 +37,10 @@ function Photo(props: PhotoProps) {
             {
                 /* check whether the current photo should 
                 display the upload image button */
-                props.addImg == true ?
-                    <button>+</button>
+                props.addImg == true && !newSrc ?
+
+                    <ImageUploader callback={setNewSrc} />
+                    //<button>+</button>
 
                     :
                     /* if it is not an 'upload image' div, check whether
