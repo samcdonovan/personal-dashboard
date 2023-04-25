@@ -20,7 +20,8 @@
     "express-fileupload": "^1.4.0",
     "fs": "^0.0.1-security",
     "rss-parser": "^3.13.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
