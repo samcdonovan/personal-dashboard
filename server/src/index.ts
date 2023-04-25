@@ -51,7 +51,7 @@ app.get("/team/:team", (req: Request, res: Response) => {
         .then((data) => {
             Utils.parseCSV(data)*/
     console.log(__dirname);
-    fs.readdir(__dirname, function (err, files) {
+    fs.readdir(__dirname + '/assets/data/', function (err, files) {
         //handling error
         if (err) {
             return console.log('Unable to scan directory: ' + err);
@@ -62,7 +62,7 @@ app.get("/team/:team", (req: Request, res: Response) => {
             console.log(file);
         });
     });
-    Utils.parseCSVFile('./assets/data/I1.CSV')
+    Utils.parseCSVFile(__dirname + '/assets/data/I1.CSV')
         .then((result) => {
             let team: string = req.params.team;
             let matches: Array<Team> = result.filter(function (item: Team) {
