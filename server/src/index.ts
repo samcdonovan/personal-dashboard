@@ -9,8 +9,8 @@ import path, { parse } from 'path'; // global install?
 import fs from 'fs';
 import * as Utils from './utils.js';
 
-dotenv.config(); // configure environment variables
 const __dirname = path.resolve();
+dotenv.config({ path: __dirname + '/server/.env' }); // load environment variables
 
 const app: Express = express();
 
@@ -148,7 +148,6 @@ app.post('/uploadImage', (req: Request, res: Response) => {
 
     uploadPath = __dirname + relativePath + "/" + file.name;
 
-    console.log(uploadPath);
     // Use the mv() method to place the file somewhere on your server
     file.mv(uploadPath, function (err) {
         if (err)

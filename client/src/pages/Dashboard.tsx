@@ -4,6 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import Widget from '../components/Widget';
 import Photo from '../components/Photo';
+import { getWeather, getClothesData } from '../utils/ProxyAPI';
 
 /* Main Dashboard page functional component; displays the 6 different widgets,
 a welcome message and the users profile picture */
@@ -20,28 +21,10 @@ function Dashboard() {
 
     useEffect(() => {
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-
-                /* fetch weather data from localhost rseource using Geolocation coordinates */
-                fetch("http://localhost:8080/weather/" + position.coords.latitude
-                    + "&" + position.coords.longitude)
-                    .then((res) => res.json())
-                    .then((data) => {
-                        setWeather(data);
-                    })
-            });
-        } else {
-            console.log("Geolocation is not supported by this browser")
-        }
+        getWeather(setWeather);
 
         ChartJS.register(ArcElement, Tooltip, Legend);
-
-        fetch("http://localhost:8080/clothes")
-            .then((res) => res.json())
-            .then((data) => {
-                setClothesData(data);
-            });
+        getClothesData(setClothesData);
     }, [])
 
     return (
