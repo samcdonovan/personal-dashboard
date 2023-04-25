@@ -62,7 +62,7 @@ app.get("/team/:team", (req: Request, res: Response) => {
             console.log(file);
         });
     });
-    Utils.parseCSVFile(__dirname + '/assets/data/I1.CSV')
+    Utils.parseCSVFile(__dirname + '/assets/data/I1.csv')
         .then((result) => {
             let team: string = req.params.team;
             let matches: Array<Team> = result.filter(function (item: Team) {
