@@ -8,6 +8,7 @@ import fileUpload from 'express-fileupload';
 import path, { parse } from 'path'; // global install?
 import fs from 'fs';
 import * as Utils from './utils.js';
+import * as Database from './database/connection.js'
 
 const __dirname = path.resolve();
 dotenv.config({ path: __dirname + '/server/.env' }); // load environment variables
@@ -160,6 +161,26 @@ app.post('/uploadImage', (req: Request, res: Response) => {
 
         res.send({ path: publicPath + "/" + file.name });
     });
+});
+
+app.post("/login", (req: Request, res: Response) => {
+    const credentials = req.body;
+
+    Database.checkLogin(credentials.username, credentials.password)
+        .then((data: any) => {
+            let result = data.length > 0 ? {
+                status: 200,
+                userId: data[0].user_id,
+                username: data[0].username,
+                profile_picture: data[0].profile_picture
+            } : {
+                status: 401
+            }
+            res.send({ result });
+        })
+        .catch((error: any) => {
+            console.log("Login POST request error: " + error);
+        });
 });
 
 /* listen on port 8080 */

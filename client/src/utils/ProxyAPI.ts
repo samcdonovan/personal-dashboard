@@ -72,3 +72,22 @@ export function searchForTeam(team: string, setData: Function) {
             console.log(data);
         })
 }
+
+export function login(username: string, password: string, setLoginData: Function) {
+    console.log(username + password)
+    fetch(host + "/login", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ username: username, password: password })
+    })
+        .then(response => response.json())
+        .then(data => {
+            setLoginData(data.result);
+        })
+        .catch(error => {
+            console.error(error)
+        })
+}

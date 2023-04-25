@@ -12,3 +12,10 @@ type Weather = {
     temp: number,
     location: string
 }
+
+type Credentials = {
+    status: number,
+    userId?: number,
+    username?: string,
+    profilePicture?: any
+}
