@@ -10,13 +10,6 @@
     justify-content: space-evenly;
 }
 
-.welcome-message {
-    font-size: 4rem;
-    text-align: center;
-    margin: 1%;
-    color: white;
-}
-
 .inner-title {
     font-size: 1.2rem;
     text-align: center;

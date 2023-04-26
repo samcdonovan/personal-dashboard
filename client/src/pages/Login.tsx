@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import { login } from "../utils/ProxyAPI";
+import styles from "../styles/loginRegister.module.css";
 
 /* Login page functional component; 
 this will be the first page the user sees */
@@ -16,11 +17,9 @@ function Login() {
     function handleSubmit(event: any) {
         event.preventDefault();
         login(username, password, setLoginData);
-
     }
 
     useEffect(() => {
-        console.log(loginData);
 
         if (loginData.status === 200) {
             localStorage.setItem('credentials',
@@ -33,36 +32,31 @@ function Login() {
     }, [loginData]);
 
     return (
-        <div className="login-container">
-            <div className="content">
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(event: any) => { setUsername(event.target.value) }}
-                        />
-                    </div>
-                    <div>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(event: any) => { setPassword(event.target.value) }}
-                        />
-                    </div>
-                    <div>
-                        <button type="submit">Login</button>
-                    </div>
+        <div>
+            <h1 className={"welcome-message " + styles["main-title"]}>Dev Challenge</h1>
 
-                    {/* link to forgotten username or password form (may add later) */}
-                    <p>Forgot <a href="#">username or password?</a></p>
+            <form className={styles["lr-container"]} onSubmit={handleSubmit}>
+                <div className={styles["input-container"]}>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(event: any) => { setUsername(event.target.value) }}
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(event: any) => { setPassword(event.target.value) }}
+                    />
+                </div>
+                <div className={styles["lr-btn-container"]}>
+                    <button className={styles["lr-btn"]} type="submit">Login</button>
 
                     {/* link to the Register page */}
-                    <p>New to the challenge? <Link to="/register">Sign up</Link></p>
-                </form>
-            </div>
+                    <p className={styles["sign-up"]}>New to the challenge? <Link to="/register"><span className="highlighted">Sign up</span></Link></p>
+                </div>
+            </form>
         </div>
     );
 }

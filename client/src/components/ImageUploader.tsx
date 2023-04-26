@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { handleImageUpload } from "../utils/ProxyAPI";
+import styles from "../styles/photo.module.css";
 
 interface Props {
     callback: Function,
@@ -26,11 +27,19 @@ function ImageUploader(props: Props) {
                 : null
             }
 
-            <input
-                type="file"
-                name="image-upload"
-                onChange={(event) => { handleImageUpload(event, props.page, props.callback) }}
-            />
+            <div>
+                <input
+                    id="upload-input"
+                    type="file"
+                    name="image-upload"
+                    onChange={(event) => { handleImageUpload(event, props.page, props.callback) }}
+                    hidden={true}
+                />
+                <label
+                    className={styles["upload-container"]}
+                    htmlFor="upload-input"
+                ><span>Add picture</span></label>
+            </div>
         </div>
     );
 };

@@ -1,5 +1,52 @@
+.main-title {
+    padding: 4% 0;
+    margin-bottom: 0;
+}
+
 .lr-btn {
     background-color: rgb(255, 228, 92);
-    border-radius: 10px;
+    font-size: 1.2rem;
+    border-radius: 150px;
+    width: 250px;
+    height: 50px;
+    cursor: pointer;
+}
 
+.lr-container {
+    position: relative;
+    height: 650px;
+    width: 80%;
+    margin: auto;
+}
+
+.lr-container input[type="text"], .lr-container input[type="password"] {}
+
+.lr-btn-container {
+    position: absolute;
+    width: 400px;
+    margin: auto;
+    text-align: center;
+    bottom: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.input-container {
+    position: relative;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 200px 200px;
+    grid-row: auto auto;
+    grid-column-gap: 200px;
+    grid-row-gap: 50px;
+    width: 675px;
+}
+
+.sign-up {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.upload-container {
+    margin-top: 30px;
 }
