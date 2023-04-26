@@ -18,6 +18,8 @@ function Dashboard() {
     });
 
     const [clothesData, setClothesData] = useState(Array<ClothingItem>);
+    const [photos, setPhotos] = useState(Array<string>);
+    const [tasks, setTasks] = useState(Array<string>);
 
     useEffect(() => {
 
@@ -25,6 +27,14 @@ function Dashboard() {
 
         ChartJS.register(ArcElement, Tooltip, Legend);
         getClothesData(setClothesData);
+
+        let photosJson = JSON.parse(localStorage.getItem("images") || '{}');
+
+        for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
+            photosJson[idx] = "";
+        }
+        setPhotos(Object.values(photosJson));
+        setTasks(Object.values(JSON.parse(localStorage.getItem("tasks") || '{}')));
     }, [])
 
     return (
@@ -52,13 +62,24 @@ function Dashboard() {
 
                 </Widget>
                 <Widget to="/dashboard/photos" title="Photos">
-                    <Photo size="small" />
-                    <Photo size="small" />
-                    <Photo size="small" />
-                    <Photo size="small" />
+                    {photos.map(function (path: string, id: number) {
+
+                        return <Photo key={id} size="small" src={path} />;
+                    })}
                 </Widget>
                 <Widget to="/dashboard/tasks" title="Tasks">
+                    {tasks.map(function (task: any, id: number) {
 
+                        return <div>
+                            <input readOnly
+                                type="text"
+                                value={task['task']}
+
+                            />
+                            <input readOnly type="checkbox" defaultChecked={task['isChecked']} />
+
+                        </div>;
+                    })}
                 </Widget>
                 <Widget title="Clothes">
                     {clothesData.length > 0 ?

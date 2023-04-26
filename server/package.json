@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/parse5": "^7.0.0",
     "axios": "^1.3.6",
     "cors": "^2.8.5",
     "csv-parse": "^5.3.8",
@@ -23,6 +24,7 @@
     "fs": "^0.0.1-security",
     "imgbox-js": "^1.0.35",
     "ncp": "^2.0.0",
+    "parse5": "^7.1.2",
     "pg": "^8.10.0",
     "rss-parser": "^3.13.0",
     "ts-node": "^10.9.1",

@@ -26,6 +26,17 @@ export function getClothesData(setClothesData: Function) {
         });
 }
 
+
+export function getNews(setNews: Function) {
+    fetch(host + "/news")
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            setNews(data);
+        });
+}
+
+
 function storePath(path: string) {
     if (localStorage.getItem('gallery') === null) {
         localStorage.setItem('gallery', JSON.stringify({ 0: path }))

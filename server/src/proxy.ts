@@ -4,8 +4,9 @@ import cors from 'cors';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import Parser from 'rss-parser';
+import { parse } from 'parse5';
 import fileUpload from 'express-fileupload';
-import path, { parse } from 'path'; // global install?
+import path from 'path'; // global install?
 import fs from 'fs';
 import { imgbox } from 'imgbox-js';
 import * as Utils from './utils.js';
@@ -79,30 +80,44 @@ app.get("/team/:team", (req: Request, res: Response) => {
 });
 
 /* express GET path for BBC news data */
-app.get("/news", async (req: Request, res: Response) => {
+app.get("/news", (req: Request, res: Response) => {
 
 
     const parser: Parser = new Parser();
-    const newsUrl = "https://feeds.bbci.co.uk/news/england/rss.xml";
+    const newsUrl = "https://www.huffingtonpost.co.uk/feeds/index.xml";
+    parser.parseURL(newsUrl)
+        .then((data) => {
+            //et article = data.items[0].content;
+            let article: string = (data.items[0].content).substring(0, (data.items[0].content).search("<!-- start relEntries -->"))
+            console.log(data.items[0].link)
 
-    // fetch(newsUrl)
-    //   .then(response => response.text())
-    //   .then(str => new DOMParser().parseFromString(str, "text/xml"))
-    //   .then(data => console.log(data))
-    const feed = await parser.parseURL(newsUrl);
-    console.log(feed.title);
-    console.log(feed);
-
-    res.send(feed);
-    //const body = await parser.parseURL(feed.items[0].link);
-    /*try {
-      const body = await parser.parseURL(feed.items[0].image);
-      //const body = await parser.parseURL(feed.items[0].link + "/rss.xml");
-    } catch (error) {
-      console.log(error);
-    }*/
-
+            res.send({ title: data.items[0].title, snippet: data.items[0].snippet, article: article });
+        });
 });
+
+function printPost(entry: any) {
+    //let article = document.createElement("article");
+    console.log(entry.link)
+    console.log(entry.h4)
+    console.log(entry.content)
+
+    const p = new DOMParser();
+    const value = p.parseFromString(entry.content, 'text/html');
+    console.log(value)
+    return value;
+    /* link = document.createElement("a");
+     link.setAttribute("href", entry.link);
+     link.setAttribute("target", "_blank");
+   
+     h4 = document.createElement("h4");
+     h4.innerText = entry.title;
+   
+     link.appendChild(h4);
+     article.appendChild(link);
+   
+     blogs = document.getElementById('blog-posts');
+     blogs.appendChild(article);*/
+}
 
 /* express GET path for clothes data */
 app.get("/clothes", (req: Request, res: Response) => {
