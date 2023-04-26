@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { searchForTeam } from '../utils/ProxyAPI';
 
 /* Sports page functional component; allows user to search for an Italian team
@@ -14,6 +14,10 @@ function Sports() {
     function handleChange(event: any) {
         setTeam(event.target.value);
     }
+
+    useEffect(() => {
+        localStorage.setItem('recent_search', JSON.stringify({ team: team, numWins: data.length }))
+    }, [data])
 
     return (
         <div>

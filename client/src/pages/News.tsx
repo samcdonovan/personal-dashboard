@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getNews } from '../utils/ProxyAPI'
 
-interface News {
+interface NewsProps {
     title: string,
     snippet: string,
     article: string
@@ -11,20 +11,19 @@ interface News {
 from the BBC RSS feed */
 function News() {
 
-    const [news, setNews] = useState<News>({
-        title: '',
-        snippet: '',
-        article: ''
-    });
-    useEffect(() => {
-        getNews(setNews);
+    const [title, setTitle] = useState('');
+    const [article, setArticle] = useState('');
 
+    useEffect(() => {
+        let currentArticle = JSON.parse(sessionStorage.getItem('currentArticle') || '{}');
+        setTitle(currentArticle.title);
+        setArticle(currentArticle.article);
     }, [])
 
     return (
         <div>
-            <h1>{news.title}</h1>
-            <div className="news-div" dangerouslySetInnerHTML={{ __html: news.article }}>
+            <h1>{title}</h1>
+            <div className="news-div" dangerouslySetInnerHTML={{ __html: article }}>
             </div>
         </div>
     );

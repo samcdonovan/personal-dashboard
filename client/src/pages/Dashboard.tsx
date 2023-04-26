@@ -4,7 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import Widget from '../components/Widget';
 import Photo from '../components/Photo';
-import { getWeather, getClothesData } from '../utils/ProxyAPI';
+import { getWeather, getClothesData, getNews } from '../utils/ProxyAPI';
 
 /* Main Dashboard page functional component; displays the 6 different widgets,
 a welcome message and the users profile picture */
@@ -20,6 +20,15 @@ function Dashboard() {
     const [clothesData, setClothesData] = useState(Array<ClothingItem>);
     const [photos, setPhotos] = useState(Array<string>);
     const [tasks, setTasks] = useState(Array<string>);
+    const [team, setTeam] = useState({
+        team: '',
+        numWins: -1
+    });
+    const [news, setNews] = useState({
+        title: '',
+        snippet: '',
+        article: ''
+    });
 
     useEffect(() => {
 
@@ -35,6 +44,10 @@ function Dashboard() {
         }
         setPhotos(Object.values(photosJson));
         setTasks(Object.values(JSON.parse(localStorage.getItem("tasks") || '{}')));
+        setTeam(JSON.parse(localStorage.getItem('recent_search') || '{}'));
+        console.log(team)
+
+        getNews(setNews);
     }, [])
 
     return (
@@ -56,10 +69,22 @@ function Dashboard() {
                     }
                 </Widget>
                 <Widget to="/dashboard/news" title="News">
-
+                    {
+                        <div>
+                            <h2>{news.title}</h2>
+                            <p>{news.snippet}</p>
+                        </div>
+                    }
                 </Widget>
                 <Widget to="/dashboard/sports" title="Sport">
-
+                    {Object.keys(team).length > 0 ?
+                        (<div>
+                            <h2>{team.team}</h2>
+                            <p>Won {team.numWins}</p>
+                        </div>)
+                        :
+                        <p>Use this widget to search for a team!</p>
+                    }
                 </Widget>
                 <Widget to="/dashboard/photos" title="Photos">
                     {photos.map(function (path: string, id: number) {

@@ -88,10 +88,12 @@ app.get("/news", (req: Request, res: Response) => {
     parser.parseURL(newsUrl)
         .then((data) => {
             //et article = data.items[0].content;
-            let article: string = (data.items[0].content).substring(0, (data.items[0].content).search("<!-- start relEntries -->"))
-            console.log(data.items[0].link)
+            let result = data.items[0];
+            let article: string = (result.content).substring(0, (result.content).search("<!-- start relEntries -->"))
+            let snippet: string = result.contentSnippet.substring(0, (result.contentSnippet.indexOf('.')));
+            // console.log(data.items[0])
 
-            res.send({ title: data.items[0].title, snippet: data.items[0].snippet, article: article });
+            res.send({ title: result.title, snippet: snippet, article: article });
         });
 });
 

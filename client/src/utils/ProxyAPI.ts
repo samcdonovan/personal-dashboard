@@ -31,7 +31,7 @@ export function getNews(setNews: Function) {
     fetch(host + "/news")
         .then((res) => res.json())
         .then((data) => {
-            console.log(data);
+            sessionStorage.setItem('currentArticle', JSON.stringify(data))
             setNews(data);
         });
 }
