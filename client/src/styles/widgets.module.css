@@ -5,12 +5,14 @@
     border-width: 1px;
     border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.5);
+    text-align: justify;
 }
 
 .widget-title {
     background-color: rgb(255, 228, 92);
     padding-top: 0;
     margin-top: 0;
+    text-align: center;
 }
 
 .link, .widget {

@@ -30,6 +30,9 @@ function Dashboard() {
         article: ''
     });
 
+    const user = JSON.parse(localStorage.getItem('user') || '{}').username;
+    const profilePicture = JSON.parse(localStorage.getItem('user') || '{}').profilePicture;
+
     useEffect(() => {
 
         getWeather(setWeather);
@@ -52,8 +55,8 @@ function Dashboard() {
 
     return (
         <div>
-            <img></img>
-            <h1>Good day User</h1>
+            <img src={profilePicture}></img>
+            <h1>Good day {user}</h1>
             <div className="content dashboard">
                 <Widget title="Weather">
                     {weather.status !== 404 ?
@@ -80,7 +83,7 @@ function Dashboard() {
                     {Object.keys(team).length > 0 ?
                         (<div>
                             <h2>{team.team}</h2>
-                            <p>Won {team.numWins}</p>
+                            <p>Won {team.numWins} matches</p>
                         </div>)
                         :
                         <p>Use this widget to search for a team!</p>

@@ -1,18 +1,40 @@
 
 const host = window.location.hostname == "localhost" ? "http://localhost:8080" : "https://personal-dashboard-proxy.onrender.com";
 
+/**
+ * Retrieves data about the weather at the user's location using Geolocation 
+ * 
+ * @param setWeather Callback function for the 'weather' state
+ */
 export function getWeather(setWeather: Function) {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
 
-            /* fetch weather data from localhost rseource using Geolocation coordinates */
-            fetch(host + "/weather/" + position.coords.latitude
-                + "&" + position.coords.longitude)
+        if (sessionStorage.getItem("coords") === null) {
+            navigator.geolocation.getCurrentPosition((position) => {
+
+                /* store coords in sessionStorage */
+                sessionStorage.setItem("coords",
+                    JSON.stringify({ lat: position.coords.latitude, lon: position.coords.longitude }));
+
+                /* fetch weather data from localhost rseource using Geolocation coordinates */
+                fetch(host + "/weather/" + position.coords.latitude
+                    + "&" + position.coords.longitude)
+                    .then((res) => res.json())
+                    .then((data) => {
+                        setWeather(data);
+                    })
+            });
+        } else {
+
+            /* if sessionStorage already contains coords, use them instead of geolocation */
+            let coords = JSON.parse(sessionStorage.getItem("coords") || "{}");
+            fetch(host + "/weather/" + coords.lat
+                + "&" + coords.lon)
                 .then((res) => res.json())
                 .then((data) => {
                     setWeather(data);
                 })
-        });
+        }
     } else {
         console.log("Geolocation is not supported by this browser")
     }
