@@ -32,7 +32,9 @@ function Widget(props: React.PropsWithChildren<WidgetProps>) {
     return (
         <ConditionalLink to={props.to}>
             <h1 className={widgetStyles['widget-title']}>{props.title}</h1>
-            {props.children}
+            <div className={widgetStyles['widget-content']}>
+                {props.children}
+            </div>
         </ConditionalLink>
     );
 }

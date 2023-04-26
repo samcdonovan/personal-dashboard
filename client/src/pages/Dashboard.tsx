@@ -5,6 +5,7 @@ import { Pie } from "react-chartjs-2";
 import Widget from '../components/Widget';
 import Photo from '../components/Photo';
 import { getWeather, getClothesData, getNews } from '../utils/ProxyAPI';
+import styles from "../styles/dashboard.module.css";
 
 /* Main Dashboard page functional component; displays the 6 different widgets,
 a welcome message and the users profile picture */
@@ -14,7 +15,8 @@ function Dashboard() {
         status: 404,
         type: "Oops!",
         temp: Infinity,
-        location: "Something went wrong!"
+        location: "Something went wrong!",
+        icon: ''
     });
 
     const [clothesData, setClothesData] = useState(Array<ClothingItem>);
@@ -37,12 +39,12 @@ function Dashboard() {
 
         getWeather(setWeather);
 
-        ChartJS.register(ArcElement, Tooltip, Legend);
+        ChartJS.register(ArcElement, Tooltip);
         getClothesData(setClothesData);
 
         let photosJson = JSON.parse(localStorage.getItem("images") || '{}');
 
-        for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
+        for (let idx = Object.keys(photosJson).length; idx < 4; idx++) {
             photosJson[idx] = "";
         }
         setPhotos(Object.values(photosJson));
@@ -56,44 +58,48 @@ function Dashboard() {
     return (
         <div>
             <img src={profilePicture}></img>
-            <h1>Good day {user}</h1>
-            <div className="content dashboard">
+            <h1 className={styles["welcome-message"]}>Good day {user}</h1>
+            <div className={"content " + styles.dashboard}>
                 <Widget title="Weather">
                     {weather.status !== 404 ?
-                        <div>
-                            <p>{weather.type}</p>
-                            <p>{weather.temp}</p>
-                            <p>{weather.location}</p>
+                        <div className={styles["weather-container"]}>
+                            <div className={styles["weather-info"]}>
+                                <img src={weather.icon} />
+                                <p>{weather.temp} <br />degrees</p>
+                            </div>
+                            <p className={styles["location"]}>{weather.location}</p>
                         </div>
                         :
                         <div>
-                            <p>Loading...</p>
+                            <p className={styles["inner-title"]}>Loading...</p>
                         </div>
                     }
                 </Widget>
                 <Widget to="/dashboard/news" title="News">
-                    {
-                        <div>
-                            <h2>{news.title}</h2>
-                            <p>{news.snippet}</p>
-                        </div>
-                    }
+
+                    <div>
+                        <h2 className={styles["inner-title"]}>{news.title}</h2>
+                        <p className={styles["inner-text"]}>{news.snippet}</p>
+                    </div>
+
                 </Widget>
                 <Widget to="/dashboard/sports" title="Sport">
-                    {Object.keys(team).length > 0 ?
+                    {team.team ?
                         (<div>
-                            <h2>{team.team}</h2>
+                            <h2 className={styles["inner-title"]}>{team.team}</h2>
                             <p>Won {team.numWins} matches</p>
                         </div>)
                         :
-                        <p>Use this widget to search for a team!</p>
+                        <p className={styles["inner-title"]}>Use this widget to <br />search for a team!</p>
                     }
                 </Widget>
                 <Widget to="/dashboard/photos" title="Photos">
-                    {photos.map(function (path: string, id: number) {
+                    <div className={styles["photo-widget"]}>
+                        {photos.map(function (path: string, id: number) {
 
-                        return <Photo key={id} size="small" src={path} />;
-                    })}
+                            return <Photo key={id} size="small" src={path} />;
+                        })}
+                    </div>
                 </Widget>
                 <Widget to="/dashboard/tasks" title="Tasks">
                     {tasks.map(function (task: any, id: number) {
@@ -111,40 +117,49 @@ function Dashboard() {
                 </Widget>
                 <Widget title="Clothes">
                     {clothesData.length > 0 ?
-                        <Pie data={{
-                            labels: [clothesData[0].clothe, clothesData[1].clothe,
-                            clothesData[2].clothe, clothesData[3].clothe,
-                            clothesData[4].clothe, clothesData[5].clothe],
-                            datasets: [
-                                {
-                                    label: '# of days worn',
-                                    data: [clothesData[0].sum, clothesData[1].sum,
-                                    clothesData[2].sum, clothesData[3].sum,
-                                    clothesData[4].sum, clothesData[5].sum],
-                                    backgroundColor: [
-                                        'rgb(255, 99, 132)',
-                                        'rgb(54, 162, 235)',
-                                        'rgb(255, 206, 86)',
-                                        'rgb(75, 192, 192)',
-                                        'rgb(153, 102, 255)',
-                                        'rgb(255, 159, 64)',
-                                    ],
-                                    borderColor: [
-                                        'rgb(255, 99, 132)',
-                                        'rgb(54, 162, 235)',
-                                        'rgb(255, 206, 86)',
-                                        'rgb(75, 192, 192)',
-                                        'rgb(153, 102, 255)',
-                                        'rgb(255, 159, 64)',
-                                    ],
-                                    borderWidth: 1,
+                        <div className={styles["chart-container"]}>
+                            <Pie className={styles["chart"]} data={{
+                                labels: [clothesData[0].clothe, clothesData[1].clothe,
+                                clothesData[2].clothe, clothesData[3].clothe,
+                                clothesData[4].clothe, clothesData[5].clothe],
+
+                                datasets: [
+                                    {
+                                        label: '# of days worn',
+                                        data: [clothesData[0].sum, clothesData[1].sum,
+                                        clothesData[2].sum, clothesData[3].sum,
+                                        clothesData[4].sum, clothesData[5].sum],
+                                        backgroundColor: [
+                                            'rgb(255, 99, 132)',
+                                            'rgb(54, 162, 235)',
+                                            'rgb(255, 206, 86)',
+                                            'rgb(75, 192, 192)',
+                                            'rgb(153, 102, 255)',
+                                            'rgb(255, 159, 64)',
+                                        ],
+                                        borderColor: [
+                                            'rgb(255, 99, 132)',
+                                            'rgb(54, 162, 235)',
+                                            'rgb(255, 206, 86)',
+                                            'rgb(75, 192, 192)',
+                                            'rgb(153, 102, 255)',
+                                            'rgb(255, 159, 64)',
+                                        ],
+                                        borderWidth: 1,
+                                    }
+                                ]
+                            }} options={{
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
                                 }
-                            ]
-                        }}
-                        /> : null}
+                            }}
+                            />
+                        </div> : null}
                 </Widget>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
 

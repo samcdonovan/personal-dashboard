@@ -1,0 +1,74 @@
+.dashboard {
+    height: 100%;
+    width: 85%;
+    padding: 0;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto;
+    grid-gap: 2rem;
+    margin: auto;
+    justify-content: space-evenly;
+}
+
+.welcome-message {
+    font-size: 4rem;
+    text-align: center;
+    margin: 1%;
+    color: white;
+}
+
+.inner-title {
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: normal;
+}
+
+.inner-text {
+    text-align: left;
+    font-size: 0.8em;
+}
+
+.photo-widget {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    grid-gap: 0.5rem;
+    justify-content: space-evenly;
+}
+
+.chart-container {
+    position: relative;
+    width: 60%;
+    margin: auto;
+    padding: 0;
+}
+
+.chart {
+    margin: auto;
+    position: relative;
+}
+
+.weather-container {
+    text-align: center;
+}
+
+.weather-info img {
+    position: relative;
+    width: 60%;
+    float: left;
+    margin: 0;
+    top: -35px;
+}
+
+.weather-info p {
+    float: right;
+    font-size: 1.5rem;
+}
+
+.location {
+    position: relative;
+    margin: 0;
+    text-align: center;
+    font-size: 1.6rem;
+    top: -50px;
+}

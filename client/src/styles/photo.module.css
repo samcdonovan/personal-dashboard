@@ -1,0 +1,17 @@
+.small-img, .large-img {
+    border-style: solid;
+    border-color: rgb(255, 228, 92);
+    border-radius: 5px;
+}
+
+.large-img {
+    width: 280;
+    height: 280;
+    background-color: white;
+}
+
+.small-img {
+    width: 80px;
+    height: 70px;
+    background-color: white;
+}

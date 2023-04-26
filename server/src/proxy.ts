@@ -37,7 +37,8 @@ app.get("/weather/:lat&:lon", (req: Request, res: Response) => {
                 status: data.data.cod,
                 type: data.data.weather[0].main,
                 temp: data.data.main.temp,
-                location: data.data.name
+                location: data.data.name,
+                icon: "https://openweathermap.org/img/wn/" + data.data.weather[0].icon + "@2x.png"
             });
         })
         /* catch and log error */
@@ -90,9 +91,13 @@ app.get("/news", (req: Request, res: Response) => {
             //et article = data.items[0].content;
             let result = data.items[0];
             let article: string = (result.content).substring(0, (result.content).search("<!-- start relEntries -->"))
-            let snippet: string = result.contentSnippet.substring(0, (result.contentSnippet.indexOf('.')));
-            // console.log(data.items[0])
-
+            let snippet: string;
+            if (result.contentSnippet.includes("function(")) {
+                snippet = result.contentSnippet.substring(result.contentSnippet.indexOf('");});'), result.contentSnippet.length);
+                snippet = snippet.substring(snippet.match('[a-zA-Z]').index, snippet.indexOf('.'));
+            } else {
+                snippet = result.contentSnippet.substring(0, (result.contentSnippet.indexOf('.')));
+            }
             res.send({ title: result.title, snippet: snippet, article: article });
         });
 });

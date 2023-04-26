@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ImageUploader from './ImageUploader';
+import styles from '../styles/photo.module.css';
 
 /* Interface for Photo component props */
 interface PhotoProps {
@@ -21,17 +22,15 @@ function Photo(props: PhotoProps) {
 
     useEffect(() => {
         if (!newSrc) setCurrentSrc(props.src);
-        console.log(currentSrc)
     }, [currentSrc]);
 
     useEffect(() => {
-        //if (newSrc) setCurrentSrc(newSrc);
         if (props.callback) props.callback(true);
     }, [newSrc]);
 
     return (
 
-        <div className={props.size + "-img"}>
+        <div className={styles[props.size + "-img"]}>
             {/* set size of the div depending on the size prop */}
 
             {
