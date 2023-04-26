@@ -30,12 +30,14 @@ async function createTable() {
 
     const res = await client.query("CREATE TABLE IF NOT EXISTS users (user_id SERIAL PRIMARY KEY, "
         + "username text UNIQUE NOT NULL, email text UNIQUE NOT NULL, " +
-        "password VARCHAR(72) NOT NULL, profile_picture BYTEA)");
+        "password VARCHAR(72) NOT NULL, profile_picture text, " +
+        "gallery text [], tasks text [])");
 
     await client.end();
 }
 
-export async function createNewUser(username: string, email: string, password: string) {
+export async function createNewUser(username: string, email: string,
+    password: string, pictureLink: string) {
 
     const client = new pg.Client(connectionUrl);
 
@@ -44,8 +46,10 @@ export async function createNewUser(username: string, email: string, password: s
     });
 
     try {
+        console.log(username);
+        console.log(pictureLink)
         const res = await client.query("INSERT INTO public.users (username, email, password, profile_picture) " +
-            "VALUES('" + username + "', '" + email + "', '" + password + "', null)");
+            "VALUES('" + username + "', '" + email + "', '" + password + "', '" + pictureLink + "')");
 
         await client.end();
 
@@ -53,6 +57,26 @@ export async function createNewUser(username: string, email: string, password: s
     } catch (error) {
         console.log("Database error: " + error);
         return 409;
+    } finally {
+        await client.end();
+    }
+}
+
+export async function appendToArray(newGalleryImg: string, username: string) {
+
+    const client = new pg.Client(connectionUrl);
+    client.connect((error) => {
+        if (error) console.log(error);
+    });
+
+    try {
+        const res = await client.query("UPDATE public.users SET gallery=ARRAY_APPEND(gallery, '" + newGalleryImg + "'" +
+            "WHERE username='" + username + "')");
+
+        return 201;
+    } catch (error) {
+        console.log("Database error: " + error);
+        return 400;
     } finally {
         await client.end();
     }
@@ -66,7 +90,7 @@ export async function checkLogin(username: string, password: string) {
     });
 
     try {
-        const res = await client.query("SELECT user_id, username, profile_picture FROM public.users " +
+        const res = await client.query("SELECT user_id, username, profile_picture, gallery, tasks FROM public.users " +
             "WHERE(username='" + username + "' AND password='" + password + "')");
 
         return res.rows;
@@ -75,7 +99,6 @@ export async function checkLogin(username: string, password: string) {
     } finally {
         await client.end();
     }
-
 }
 
 async function test() {

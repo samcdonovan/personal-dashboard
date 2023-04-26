@@ -39,7 +39,7 @@ function Photo(props: PhotoProps) {
                 display the upload image button */
                 props.addImg == true && !newSrc ?
 
-                    <ImageUploader callback={setNewSrc} />
+                    <ImageUploader callback={setNewSrc} page={"gallery"} />
                     //<button>+</button>
 
                     :

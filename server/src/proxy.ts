@@ -7,6 +7,7 @@ import Parser from 'rss-parser';
 import fileUpload from 'express-fileupload';
 import path, { parse } from 'path'; // global install?
 import fs from 'fs';
+import { imgbox } from 'imgbox-js';
 import * as Utils from './utils.js';
 import * as Database from './database/connection.js'
 
@@ -16,7 +17,7 @@ dotenv.config({ path: __dirname + '/server/.env' }); // load environment variabl
 const app: Express = express();
 
 app.use(cors()); // allow CORS
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(fileUpload());
 
 /* express GET path for weather data. Takes two paramaters: latitude and longitude */
@@ -142,11 +143,10 @@ app.get("/clothes", (req: Request, res: Response) => {
 
 app.post('/uploadImage', (req: Request, res: Response) => {
     let file: fileUpload.UploadedFile;
-    let uploadPath;
+    let uploadPath: string;
 
     file = req.files.uploadedPhoto as fileUpload.UploadedFile;
-
-    let publicPath: string = '/images/uploaded/' + req.body.user;
+    let publicPath: string = '/images/tmp/' + req.body.username;
     let relativePath: string = '/client/public' + publicPath;
 
     if (!fs.existsSync(__dirname + relativePath)) {
@@ -158,9 +158,18 @@ app.post('/uploadImage', (req: Request, res: Response) => {
     file.mv(uploadPath, function (err) {
         if (err)
             return res.status(500).send(err);
-
-        res.send({ path: publicPath + "/" + file.name });
     });
+
+    imgbox(uploadPath)
+        .then((result) => {
+            res.send({ path: result.data[0].original_url })
+
+            /* delete temp file from filesystem once uploaded to imgbox */
+            fs.unlink(uploadPath, (err) => {
+                if (err) throw err;
+                console.log(uploadPath + ' was deleted');
+            });
+        });
 });
 
 app.post("/login", (req: Request, res: Response) => {
@@ -172,7 +181,9 @@ app.post("/login", (req: Request, res: Response) => {
                 status: 200,
                 userId: data[0].user_id,
                 username: data[0].username,
-                profile_picture: data[0].profile_picture
+                profile_picture: data[0].profile_picture,
+                gallery: data[0].gallery,
+                tasks: data[0].tasks
             } : {
                 status: 401
             }
@@ -185,8 +196,9 @@ app.post("/login", (req: Request, res: Response) => {
 
 app.post("/register", (req: Request, res: Response) => {
     const credentials = req.body;
-
-    Database.createNewUser(credentials.username, credentials.email, credentials.password)
+    console.log(req.body)
+    Database.createNewUser(credentials.username, credentials.email,
+        credentials.password, credentials.imgPath)
         .then((data: any) => {
             console.log(data);
             res.send({ data });
@@ -196,6 +208,17 @@ app.post("/register", (req: Request, res: Response) => {
         });
 });
 
+app.put("/upload", (req: Request, res: Response) => {
+
+    Database.appendToArray(req.body.image, req.body.username)
+        .then((data: any) => {
+            console.log(data);
+            res.send({ data });
+        })
+        .catch((error: any) => {
+            console.log("Upload PUT request error: " + error);
+        });
+});
 /* listen on port 8080 */
 const PORT = 8080;
 app.listen(PORT, () => {

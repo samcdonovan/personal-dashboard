@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { register } from "../utils/ProxyAPI";
+import ImageUploader from '../components/ImageUploader';
 
 /* Register page functional component; allows user to register an
 account for the dashboard */
@@ -10,11 +11,14 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [imgPath, setImgPath] = useState("");
+    const [imageBlob, setImageBlob] = useState(new Blob());
     const [registerStatus, setRegisterStatus] = useState(0);
 
     function handleSubmit(event: any) {
         event.preventDefault();
-        register(username, email, password, setRegisterStatus);
+        console.log(imageBlob)
+        register(username, email, password, imgPath, setRegisterStatus);
     }
 
     useEffect(() => {
@@ -25,6 +29,9 @@ function Register() {
         }
     }, [registerStatus]);
 
+    useEffect(() => {
+        console.log(imgPath)
+    }, [imgPath]);
 
     return (
         <div className="login-container">
@@ -62,6 +69,7 @@ function Register() {
                         />
                     </div>
 
+                    <ImageUploader callback={setImgPath} page="register" />
                     <div>
                         <button type="submit">Register</button>
                     </div>

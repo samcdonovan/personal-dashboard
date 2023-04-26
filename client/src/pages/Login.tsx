@@ -9,7 +9,7 @@ function Login() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [loginData, setLoginData] = useState<Credentials>({ status: 0 });
+    const [loginData, setLoginData] = useState<LoginData>({ status: 0 });
 
     const navigate = useNavigate();
 
@@ -24,7 +24,10 @@ function Login() {
 
         if (loginData.status === 200) {
             localStorage.setItem('credentials',
-                JSON.stringify({ username: loginData.username, profilePicture: loginData.profilePicture }));
+                JSON.stringify({
+                    username: loginData.username, profilePicture: loginData.profilePicture,
+                    gallery: loginData.gallery, tasks: loginData.tasks
+                }));
             navigate('/dashboard');
         }
     }, [loginData]);

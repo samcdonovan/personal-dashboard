@@ -12,9 +12,7 @@ function Photos() {
     const [uploadCheck, setUploadCheck] = useState(false);
 
     useEffect(() => {
-        console.log(uploadCheck)
         let photosJson = JSON.parse(localStorage.getItem("images") || '{}');
-        console.log(Object.keys(photosJson).length);
 
         for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
             photosJson[idx] = "";
@@ -29,7 +27,7 @@ function Photos() {
             <h1>Photos</h1>
 
             {photos.map(function (path: string, id: number) {
-                console.log(path);
+
                 let addImg = false;
 
                 /* check if the image is not empty */

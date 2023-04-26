@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { handleImageUpload } from "../utils/ProxyAPI";
 
 interface Props {
-    callback: Function
+    callback: Function,
+    page: string
 }
+
 function ImageUploader(props: Props) {
 
     const [selectedImage, setSelectedImage] = useState(null);
 
     return (
         <div>
-            <h1>Upload and Display Image usign React Hook's</h1>
 
             {selectedImage !== null ?
                 <div>
@@ -28,7 +29,7 @@ function ImageUploader(props: Props) {
             <input
                 type="file"
                 name="image-upload"
-                onChange={(event) => { handleImageUpload(event, props.callback) }}
+                onChange={(event) => { handleImageUpload(event, props.page, props.callback) }}
             />
         </div>
     );

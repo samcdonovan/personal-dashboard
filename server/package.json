@@ -21,6 +21,7 @@
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
     "fs": "^0.0.1-security",
+    "imgbox-js": "^1.0.35",
     "ncp": "^2.0.0",
     "pg": "^8.10.0",
     "rss-parser": "^3.13.0",

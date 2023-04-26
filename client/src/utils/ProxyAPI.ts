@@ -26,25 +26,66 @@ export function getClothesData(setClothesData: Function) {
         });
 }
 
-function storePath(path: string, callback: Function) {
-    if (localStorage.getItem('images') === null) {
-        localStorage.setItem('images', JSON.stringify({ 0: path }))
+function storePath(path: string) {
+    if (localStorage.getItem('gallery') === null) {
+        localStorage.setItem('gallery', JSON.stringify({ 0: path }))
     }
     else {
-        let images = JSON.parse(localStorage.getItem('images') || "");
+        let images = JSON.parse(localStorage.getItem('gallery') || "");
         images[Object.keys(images).length] = path;
         console.log(images);
-        localStorage.setItem('images', JSON.stringify(images));
+        localStorage.setItem('gallery', JSON.stringify(images));
     }
 
-    callback(path);
+    fetch(host + '/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            image: path,
+            username: JSON.parse(localStorage.getItem('username') || '{}').username
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+
+        })
+        .catch(error => {
+            console.error(error)
+        })
 }
 
-export function handleImageUpload(event: any, setImgSrc: Function) {
+export function handleImageBlob(event: any, callback: Function) {
+    const files = event.target.files;
+    console.log(files)
+    const formData = new FormData();
+    const photoBlob = new Blob([files[0]], {
+        type: files[0].type
+    })
+
+    formData.append('uploadedPhoto', photoBlob);
+    formData.append("user", "Sam");
+    callback(photoBlob);
+    /*
+        fetch(host + '/uploadImage', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                //storePath(data.path, callback);
+                callback(data);
+            })
+            .catch(error => {
+                console.error(error)
+            })
+            */
+}
+export function handleImageUpload(event: any, calledFrom: string, callback: Function) {
     const files = event.target.files;
     const formData = new FormData();
     formData.append('uploadedPhoto', files[0]);
-    formData.append("user", "Sam");
+    formData.append("user", JSON.parse(localStorage.getItem('username') || '{}').username);
 
     fetch(host + '/uploadImage', {
         method: 'POST',
@@ -52,7 +93,8 @@ export function handleImageUpload(event: any, setImgSrc: Function) {
     })
         .then(response => response.json())
         .then(data => {
-            storePath(data.path, setImgSrc);
+            callback(data.path);
+            if (calledFrom === "gallery") storePath(data.path);
         })
         .catch(error => {
             console.error(error)
@@ -75,6 +117,7 @@ export function searchForTeam(team: string, setData: Function) {
 
 export function login(username: string, password: string, setLoginData: Function) {
     console.log(username + password)
+
     fetch(host + "/login", {
         method: 'POST',
         headers: {
@@ -93,15 +136,27 @@ export function login(username: string, password: string, setLoginData: Function
 }
 
 export function register(username: string, email: string,
-    password: string, setRegisterStatus: Function) {
+    password: string, imgPath: string, setRegisterStatus: Function) {
+    const formData = new FormData();
+    /*
+        formData.append('username', username);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('uploadedPhoto', imageBlob);
+    */
 
+    //console.log(formData)
     fetch(host + "/register", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({ username: username, email: email, password: password })
+        body:
+            JSON.stringify({
+                username: username, email: email,
+                password: password, imgPath: imgPath
+            })
     })
         .then(response => response.json())
         .then(data => {

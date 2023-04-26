@@ -13,9 +13,11 @@ type Weather = {
     location: string
 }
 
-type Credentials = {
+type LoginData = {
     status: number,
     userId?: number,
     username?: string,
-    profilePicture?: any
+    profilePicture?: any,
+    gallery?: Array<string>,
+    tasks?: Array<string>
 }
