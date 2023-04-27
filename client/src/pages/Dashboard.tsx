@@ -111,7 +111,7 @@ function Dashboard() {
                 </Widget>
                 <Widget to="/dashboard/tasks" title="Tasks">
                     <div className={styles["task-container"]}>
-                        {tasks.map(function (task: any, id: number) {
+                        {tasks.length > 0 ? tasks.map(function (task: any, id: number) {
                             if (id < 3)
                                 return <div key={id}>
                                     <input
@@ -123,7 +123,8 @@ function Dashboard() {
                                     <input readOnly type="checkbox" defaultChecked={task['isChecked']} />
 
                                 </div>;
-                        })}
+                        }) :
+                            <p className={styles["inner-title"]}>You currently have no tasks in your to-do list!</p>}
                     </div>
                 </Widget>
                 <Widget title="Clothes">

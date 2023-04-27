@@ -22,7 +22,7 @@ app.use(fileUpload());
 
 /* express GET path for weather data. Takes two paramaters: latitude and longitude */
 app.get("/weather/:lat&:lon", (req: Request, res: Response) => {
-    console.log(process.env.WEATHER_SECRET_KEY);
+
     /* build URL for OpenWeather GET request using query paramaters */
     const url = "https://api.openweathermap.org/data/2.5/weather?lat="
         + req.params.lat + "&lon=" + req.params.lon + "&appid=" + process.env.WEATHER_SECRET_KEY
@@ -183,27 +183,7 @@ app.post('/uploadImage', (req: Request, res: Response) => {
 app.post("/login", (req: Request, res: Response) => {
     const credentials = req.body;
 
-    /*
-    Database.checkPassword(credentials.username, credentials.password)
-        .then((data: any) => {
-            
-            let result = data.length > 0 ? {
-                status: 200,
-                userId: data[0].user_id,
-                username: data[0].username,
-                profile_picture: data[0].profile_picture,
-                gallery: data[0].gallery,
-                tasks: data[0].tasks
-            } : {
-                status: 401
-            }
-            res.send({ result });
-        })
-        .catch((error: any) => {
-            console.log("Login POST request error: " + error);
-        });;
-        */
-
+    /* retrieve login data from DB */
     Database.login(credentials.username, credentials.password)
         .then((data: any) => {
             let result = data.length > 0 ? {
