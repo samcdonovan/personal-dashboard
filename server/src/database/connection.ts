@@ -56,8 +56,6 @@ export async function createNewUser(username: string, email: string,
         if (error) console.log(error);
     });
 
-    //const hashedPassword = await bcrypt.hash(password, 10);
-
     try {
 
         /* run insert query */
@@ -167,7 +165,7 @@ export async function login(username: string, password: string) {
     });
 
     try {
-
+        //const hashedPassword = await bcrypt.hash(password, 10);
         /* run select query on users table */
         const res = await client.query("SELECT user_id, username, profile_picture, gallery, tasks FROM public.users " +
             "WHERE(username='" + username + "' AND password='" + password + "')");

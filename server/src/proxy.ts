@@ -153,7 +153,9 @@ app.post('/uploadImage', (req: Request, res: Response) => {
 
     /* create temp location for file */
     let publicPath: string = '/images/tmp/' + req.body.username;
-    let relativePath: string = '/client/public' + publicPath;
+
+    let relativePath: string = __dirname.includes('C:\\Users\\') ? '/client/public' : '';
+    relativePath += publicPath;
 
     if (!fs.existsSync(__dirname + relativePath)) {
         fs.mkdirSync(__dirname + relativePath)
