@@ -31,8 +31,10 @@ function Login() {
         if (loginData.status === 200) {
             localStorage.setItem('credentials',
                 JSON.stringify({
-                    username: loginData.username, profilePicture: loginData.profilePicture,
-                    gallery: loginData.gallery, tasks: loginData.tasks
+                    username: loginData.username,
+                    profilePicture: loginData.profilePicture,
+                    gallery: loginData.gallery,
+                    tasks: loginData.tasks
                 }));
             navigate('/dashboard');
         } else if (loginData.status == 401) {

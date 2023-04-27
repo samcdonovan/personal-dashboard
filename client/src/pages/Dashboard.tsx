@@ -37,11 +37,14 @@ function Dashboard() {
     });
 
     /* retrieve username and password from localStorage */
-    const user = JSON.parse(localStorage.getItem('user') || '{}').username;
-    const profilePicture = JSON.parse(localStorage.getItem('user') || '{}').profilePicture;
+    const [user, setUser] = useState('');
+    const [profilePicture, setProfilePicture] = useState('');
 
     useEffect(() => {
-
+        setUser(JSON.parse(localStorage.getItem('credentials') || '{}').username);
+        setProfilePicture(JSON.parse(localStorage.getItem('credentials') || '{}').profilePicture);
+        console.log(user);
+        console.log(profilePicture);
         getWeather(setWeather);
 
         ChartJS.register(ArcElement, Tooltip);

@@ -56,13 +56,13 @@ export async function createNewUser(username: string, email: string,
         if (error) console.log(error);
     });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
 
         /* run insert query */
         const res = await client.query("INSERT INTO public.users (username, email, password, profile_picture) " +
-            "VALUES('" + username + "', '" + email + "', '" + hashedPassword + "', '" + pictureLink + "')");
+            "VALUES('" + username + "', '" + email + "', '" + password + "', '" + pictureLink + "')");
 
         await client.end();
 
@@ -136,13 +136,6 @@ export async function checkPassword(username: string, password: string) {
             "WHERE(username='" + username + "')");
 
         return comparePassword(password, res.rows[0].password);
-
-        // .then(result => {
-        //     return result
-        // })
-        // .catch(err => {
-        //     console.log(err)
-        // })
 
     } catch (error) {
         console.log("Database error: " + error);
