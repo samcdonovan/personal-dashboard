@@ -45,7 +45,7 @@ Overall, all of the functionality is complete as well as the styling. There are 
 - [bcrypt](https://www.npmjs.com/package/bcrypt): Hashing and salting functionality
 - [fs](https://nodejs.org/api/fs.html)
 - [pg](https://www.postgresql.org/): Node Postgres library
-- [cors](https://www.npmjs.com/package/cors): Enabled CORS for axios requests to the Starling API
+- [cors](https://www.npmjs.com/package/cors): Enabled CORS for axios requests to the different APIs
 - [imgbox-js](https://www.npmjs.com/package/imgbox-js/v/1.0.35): Uploaded images to a public URL. Though this solution for storing uploaded images is not ideal, it was the most time-efficient solution for me.
 - [rss-parser](https://www.npmjs.com/package/rss-parser): RSS parser for getting a news feed
 - [csv-parser](https://www.npmjs.com/package/csv-parser): CSV parser for retrieving data about football teams
