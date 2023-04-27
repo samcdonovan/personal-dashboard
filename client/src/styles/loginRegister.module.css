@@ -19,8 +19,6 @@
     margin: auto;
 }
 
-.lr-container input[type="text"], .lr-container input[type="password"] {}
-
 .lr-btn-container {
     position: absolute;
     width: 400px;
@@ -45,8 +43,4 @@
 .sign-up {
     font-size: 1.5rem;
     color: white;
-}
-
-.upload-container {
-    margin-top: 30px;
 }

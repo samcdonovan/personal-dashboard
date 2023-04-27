@@ -7,7 +7,8 @@ interface PhotoProps {
     size: string,
     src?: string,
     addImg?: boolean,
-    callback?: Function
+    callback?: Function,
+    page: string
 }
 
 /**
@@ -38,7 +39,7 @@ function Photo(props: PhotoProps) {
                 display the upload image button */
                 props.addImg == true && !newSrc ?
 
-                    <ImageUploader callback={setNewSrc} page={"gallery"} />
+                    <ImageUploader callback={setNewSrc} page={props.page} />
                     //<button>+</button>
 
                     :
@@ -51,7 +52,7 @@ function Photo(props: PhotoProps) {
                         :
 
                         /* otherwise display the image */
-                        <img src={props.src} />
+                        <img className={styles[props.size + "-img"]} src={props.src} />
             }
 
         </div>

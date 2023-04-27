@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styles from "../styles/tasks.module.css";
 
 /* Simple props interface for Task component */
 interface TaskProps {
@@ -33,7 +34,7 @@ function Task(props: TaskProps) {
 
     return (
 
-        <div>
+        <div className={styles["task"]}>
             <input
                 type="text"
                 placeholder={"Task " + (props.id + 1)}

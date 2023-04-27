@@ -42,23 +42,23 @@ function Dashboard() {
         ChartJS.register(ArcElement, Tooltip);
         getClothesData(setClothesData);
 
-        let photosJson = JSON.parse(localStorage.getItem("images") || '{}');
+        let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
+        let currentPhotos = [];
 
-        for (let idx = Object.keys(photosJson).length; idx < 4; idx++) {
-            photosJson[idx] = "";
+        for (let idx = 0; idx < 4; idx++) {
+            currentPhotos[idx] = photosJson[idx];
         }
-        setPhotos(Object.values(photosJson));
+        setPhotos(Object.values(currentPhotos));
         setTasks(Object.values(JSON.parse(localStorage.getItem("tasks") || '{}')));
         setTeam(JSON.parse(localStorage.getItem('recent_search') || '{}'));
-        console.log(team)
 
         getNews(setNews);
     }, [])
 
     return (
         <div>
-            <img src={profilePicture}></img>
-            <h1 className={styles["welcome-message"]}>Good day {user}</h1>
+            <img className={styles["profile-picture"]} src={profilePicture}></img>
+            <h1 className="welcome-message">Good day {user}</h1>
             <div className={"content " + styles.dashboard}>
                 <Widget title="Weather">
                     {weather.status !== 404 ?
@@ -97,23 +97,26 @@ function Dashboard() {
                     <div className={styles["photo-widget"]}>
                         {photos.map(function (path: string, id: number) {
 
-                            return <Photo key={id} size="small" src={path} />;
+                            return <Photo key={id} size="small" src={path} page="dashboard" />;
                         })}
                     </div>
                 </Widget>
                 <Widget to="/dashboard/tasks" title="Tasks">
-                    {tasks.map(function (task: any, id: number) {
+                    <div className={styles["task-container"]}>
+                        {tasks.map(function (task: any, id: number) {
+                            if (id < 3)
+                                return <div key={id}>
+                                    <input
+                                        readOnly
+                                        type="text"
+                                        value={task['task']}
 
-                        return <div>
-                            <input readOnly
-                                type="text"
-                                value={task['task']}
+                                    />
+                                    <input readOnly type="checkbox" defaultChecked={task['isChecked']} />
 
-                            />
-                            <input readOnly type="checkbox" defaultChecked={task['isChecked']} />
-
-                        </div>;
-                    })}
+                                </div>;
+                        })}
+                    </div>
                 </Widget>
                 <Widget title="Clothes">
                     {clothesData.length > 0 ?

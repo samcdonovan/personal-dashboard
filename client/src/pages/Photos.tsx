@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Photo from "../components/Photo";
-
+import styles from "../styles/photo.module.css";
+import { Link } from "react-router-dom";
 
 interface Props {
     callback?: Function
@@ -12,36 +13,58 @@ function Photos() {
     const [uploadCheck, setUploadCheck] = useState(false);
 
     useEffect(() => {
-        let photosJson = JSON.parse(localStorage.getItem("images") || '{}');
+        let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
 
         for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
             photosJson[idx] = "";
         }
+        setPhotos(Object.values(photosJson));
+    }, []);
 
+    useEffect(() => {
+        let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
+
+        for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
+            photosJson[idx] = "";
+        }
+        console.log(photosJson)
         setPhotos(Object.values(photosJson));
         setUploadCheck(false);
-    }, [uploadCheck])
+    }, [uploadCheck]);
 
     return (
         <div>
-            <h1>Photos</h1>
 
-            {photos.map(function (path: string, id: number) {
+            <Link to="/dashboard">
+                <button className="link-btn">Go to dashboard</button>
+            </Link>
+            <h1 className="page-title">Gallery</h1>
 
-                let addImg = false;
+            <div className={styles["gallery"]}>
+                {photos.map(function (path: string, id: number) {
 
-                /* check if the image is not empty */
-                if (!path) {
-                    /* check if this is the first image, or if the previous image isn't empty */
-                    if (id == 0 || photos[id - 1]) {
-                        addImg = true;
+                    let addImg = false;
+
+                    /* check if the image is not empty */
+                    if (!path) {
+                        /* check if this is the first image, or if the previous image isn't empty */
+                        if (id == 0 || photos[id - 1]) {
+                            addImg = true;
+                        }
                     }
-                }
-                /* return a large Photo component. If the src is empty and this object is either the
-                first Photo in the gallery, or the previous object had a src, addImge will be true and so
-                the 'upload image' button will be displayed instead of an empty box */
-                return <Photo key={id} size="large" addImg={addImg} src={path} callback={setUploadCheck} />;
-            })}
+                    /* return a large Photo component. If the src is empty and this object is either the
+                    first Photo in the gallery, or the previous object had a src, addImge will be true and so
+                    the 'upload image' button will be displayed instead of an empty box */
+                    return <Photo
+                        key={id}
+                        size="large"
+                        addImg={addImg}
+                        src={path}
+                        callback={setUploadCheck}
+                        page={"gallery"}
+                    />;
+                })}
+            </div>
 
         </div>
     );

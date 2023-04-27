@@ -36,9 +36,11 @@ function ImageUploader(props: Props) {
                     hidden={true}
                 />
                 <label
-                    className={styles["upload-container"]}
+                    className={styles["upload-" + props.page]}
                     htmlFor="upload-input"
-                ><span>Add picture</span></label>
+                >
+                    <span>{props.page === "register" ? "Add picture" : "+"}</span>
+                </label>
             </div>
         </div>
     );

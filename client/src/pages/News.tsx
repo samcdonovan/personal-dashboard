@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getNews } from '../utils/ProxyAPI'
-
-interface NewsProps {
-    title: string,
-    snippet: string,
-    article: string
-}
+import styles from "../styles/news.module.css";
+import { Link } from "react-router-dom";
 
 /* News page functional component; displays the most recent article
 from the BBC RSS feed */
@@ -22,9 +17,18 @@ function News() {
 
     return (
         <div>
-            <h1>{title}</h1>
-            <div className="news-div" dangerouslySetInnerHTML={{ __html: article }}>
+
+            <Link to="/dashboard">
+                <button className="link-btn">Go to dashboard</button>
+            </Link>
+
+            <h1 className="page-title">News</h1>
+            <div className="content">
+                <h1 className={styles["news-title"]}>{title}</h1>
+                <div className={styles["news-div"]} dangerouslySetInnerHTML={{ __html: article }}>
+                </div>
             </div>
+
         </div>
     );
 }

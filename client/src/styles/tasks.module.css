@@ -1,0 +1,31 @@
+.tasks-page-container div {
+    margin: auto;
+    width: fit-content;
+}
+
+.tasks-page-container input[type="text"] {
+    width: 1000px;
+    height: 30px;
+    font-size: 1.5rem;
+}
+
+.tasks-page-container input[type="checkbox"] {
+    transform: scale(2.5, 2.5);
+    margin-left: 30px;
+}
+
+.tasks-page-container .task {
+    margin-top: 25px;
+    color: white;
+}
+
+.add-task {
+    border: none;
+    background-color: transparent;
+}
+
+.plus-icon {
+    color: rgb(255, 228, 92);
+    font-size: 4rem;
+    font-weight: normal;
+}

@@ -1,0 +1,22 @@
+.input-container {
+    position: relative;
+    margin: auto;
+    width: 550px;
+}
+
+.input-container input[type="text"] {
+    font-size: 1.8rem;
+    display: block;
+    margin: auto;
+}
+
+.subtext {
+    font-size: 1.3rem;
+}
+
+.won-against {
+    line-height: 0.2;
+    width: 300px;
+    position: relative;
+    margin-left: 20px;
+}

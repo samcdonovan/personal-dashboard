@@ -1,0 +1,12 @@
+.news-title {}
+
+.news-div {
+    text-align: justify;
+}
+
+.news-div img {
+    display: block;
+    text-align: center;
+    margin: auto;
+    padding: 2% 0;
+}

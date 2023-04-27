@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { register } from "../utils/ProxyAPI";
 import ImageUploader from '../components/ImageUploader';
 import styles from "../styles/loginRegister.module.css";
+import Photo from '../components/Photo';
 
 /* Register page functional component; allows user to register an
 account for the dashboard */
@@ -13,12 +14,10 @@ function Register() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [imgPath, setImgPath] = useState("");
-    const [imageBlob, setImageBlob] = useState(new Blob());
     const [registerStatus, setRegisterStatus] = useState(0);
 
     function handleSubmit(event: any) {
         event.preventDefault();
-        console.log(imageBlob)
         register(username, email, password, imgPath, setRegisterStatus);
     }
 
@@ -68,8 +67,12 @@ function Register() {
                     />
                 </div>
 
-                <div className={styles["upload-container"]}>
-                    <ImageUploader callback={setImgPath} page="register" />
+                <div className={styles["upload-register"]}>
+                    {imgPath === '' ?
+                        <ImageUploader callback={setImgPath} page="register" />
+                        :
+                        <Photo size="medium" src={imgPath} addImg={false} page="register" />
+                    }
                 </div>
                 <div className={styles["lr-btn-container"]}>
                     <button className={styles["lr-btn"]} type="submit">Register</button>

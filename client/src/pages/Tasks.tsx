@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import Task from "../components/Task";
+import styles from "../styles/tasks.module.css";
+import { Link } from "react-router-dom";
 
 /* To-do list page functional component; displays current tasks for the user,
 allows them to tick them if they are completem and add more tasks */
@@ -34,9 +36,17 @@ function Tasks() {
 
     return (
         <div>
-            <h1>Tasks</h1>
-            {taskList}
-            <button onClick={addTask}>+</button>
+            <Link to="/dashboard">
+                <button className="link-btn">Go to dashboard</button>
+            </Link>
+            <h1 className="page-title">Tasks</h1>
+            <div className={"content " + styles["tasks-page-container"]}>
+                <div>
+                    {taskList}
+                    <button className={styles["add-task"]} onClick={addTask}><span className={styles["plus-icon"]}>+</span></button>
+                </div>
+            </div>
+
         </div>
     );
 }

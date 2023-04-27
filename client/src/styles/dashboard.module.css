@@ -10,6 +10,14 @@
     justify-content: space-evenly;
 }
 
+.profile-picture {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    margin-left: 20px;
+    z-index: 2;
+}
+
 .inner-title {
     font-size: 1.2rem;
     text-align: center;
@@ -64,4 +72,14 @@
     text-align: center;
     font-size: 1.6rem;
     top: -50px;
+}
+
+.task-container input[type="text"] {
+    width: 200px;
+    height: 30px;
+    font-size: 1.4rem;
+    background: transparent;
+    border: none;
+    border-bottom: solid;
+    margin-top: 10px;
 }

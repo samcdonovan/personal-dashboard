@@ -88,9 +88,16 @@ app.get("/news", (req: Request, res: Response) => {
     const newsUrl = "https://www.huffingtonpost.co.uk/feeds/index.xml";
     parser.parseURL(newsUrl)
         .then((data) => {
-            //et article = data.items[0].content;
+
             let result = data.items[0];
-            let article: string = (result.content).substring(0, (result.content).search("<!-- start relEntries -->"))
+            let article: string;
+
+            if (result.content.search("<!-- start relEntries -->") !== -1) {
+                article = (result.content).substring(0, (result.content).search("<!-- start relEntries -->"))
+            } else {
+                article = result.content;
+            }
+
             let snippet: string;
             if (result.contentSnippet.includes("function(")) {
                 snippet = result.contentSnippet.substring(result.contentSnippet.indexOf('");});'), result.contentSnippet.length);
@@ -98,6 +105,7 @@ app.get("/news", (req: Request, res: Response) => {
             } else {
                 snippet = result.contentSnippet.substring(0, (result.contentSnippet.indexOf('.')));
             }
+
             res.send({ title: result.title, snippet: snippet, article: article });
         });
 });
