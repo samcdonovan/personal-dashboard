@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import { login } from "../utils/ProxyAPI";
 import styles from "../styles/loginRegister.module.css";
 
-/* Login page functional component; 
-this will be the first page the user sees */
+/**
+ * Login page functional component; this will be the first page the user sees
+ * @returns React component
+ */
 function Login() {
 
     const [username, setUsername] = useState("");
@@ -14,13 +16,18 @@ function Login() {
 
     const navigate = useNavigate();
 
+    /**
+     * Handles login form submit
+     * @param event Event that triggered the submit
+     */
     function handleSubmit(event: any) {
         event.preventDefault();
-        login(username, password, setLoginData);
+        login(username, password, setLoginData); // call login from ProxyAPI
     }
 
     useEffect(() => {
 
+        /* if login was successful, store users data and navigate to dashboard */
         if (loginData.status === 200) {
             localStorage.setItem('credentials',
                 JSON.stringify({

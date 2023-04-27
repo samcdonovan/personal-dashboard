@@ -3,10 +3,12 @@ import widgetStyles from "../styles/widgets.module.css";
 import React from "react";
 import { Link } from "react-router-dom";
 
+/* custom props for React Link */
 interface LinkProps {
     to?: string
 }
 
+/* Props for Widgt component, extends the custom Link props */
 interface WidgetProps extends LinkProps {
     title: string
 }
@@ -30,6 +32,8 @@ function ConditionalLink(props: React.PropsWithChildren<LinkProps>) {
 function Widget(props: React.PropsWithChildren<WidgetProps>) {
 
     return (
+
+        /* not all widgets are clickable and ConditionalLink handles that */
         <ConditionalLink to={props.to}>
             <h1 className={widgetStyles['widget-title']}>{props.title}</h1>
             <div className={widgetStyles['widget-content']}>

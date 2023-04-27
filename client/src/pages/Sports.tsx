@@ -3,8 +3,11 @@ import { searchForTeam } from '../utils/ProxyAPI';
 import styles from "../styles/sports.module.css";
 import { Link } from "react-router-dom";
 
-/* Sports page functional component; allows user to search for an Italian team
-and then displays which teams their team won against */
+/**
+ * Sports page functional component; allows user to search for an Italian team
+ * and then displays which teams their team won against 
+ * @returns React component
+ */
 function Sports() {
     const [team, setTeam] = useState('');
     const [data, setData] = useState([]);
@@ -20,6 +23,7 @@ function Sports() {
             searchForTeam(event.target.value, setData);
     }
 
+    /* when data state is updated, store the recent search in localStorage */
     useEffect(() => {
         localStorage.setItem('recent_search', JSON.stringify({ team: team, numWins: data.length }))
     }, [data])
@@ -47,7 +51,6 @@ function Sports() {
                         <div className={styles["won-against"]}>
                             {
                                 data.map(function (item: any, id: number) {
-                                    console.log(item);
 
                                     /* determine which team they beat using the FTR field */
                                     return <p key={id}>{item.FTR == "A" ? item.HomeTeam : item.AwayTeam} </p>

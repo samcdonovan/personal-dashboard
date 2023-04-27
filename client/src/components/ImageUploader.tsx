@@ -1,33 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import { handleImageUpload } from "../utils/ProxyAPI";
 import styles from "../styles/photo.module.css";
 
+/* Props interface with a callback function to pass
+state data and the page that the current ImageUploader is on */
 interface Props {
     callback: Function,
     page: string
 }
 
+/**
+ * Image Uploader functional component; allows the user to upload an image 
+ * usung a file upload input
+ * 
+ * @param props Props for the ImageUploader
+ * @returns React component
+ */
 function ImageUploader(props: Props) {
-
-    const [selectedImage, setSelectedImage] = useState(null);
 
     return (
         <div>
 
-            {selectedImage !== null ?
-                <div>
-                    <img
-                        alt="Image not found"
-                        width={"250px"}
-                        src={URL.createObjectURL(selectedImage)}
-                    />
-                    <br />
-                    <button onClick={() => setSelectedImage(null)}>Remove</button>
-                </div>
-                : null
-            }
-
             <div>
+
+                {/* hidden file input field */}
                 <input
                     id="upload-input"
                     type="file"
@@ -35,6 +31,8 @@ function ImageUploader(props: Props) {
                     onChange={(event) => { handleImageUpload(event, props.page, props.callback) }}
                     hidden={true}
                 />
+
+                {/* custom label for the input, changes depending on the page */}
                 <label
                     className={styles["upload-" + props.page]}
                     htmlFor="upload-input"

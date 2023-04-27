@@ -31,7 +31,7 @@ async function createTable() {
 
     const res = await client.query("CREATE TABLE IF NOT EXISTS users (user_id SERIAL PRIMARY KEY, "
         + "username text UNIQUE NOT NULL, email text UNIQUE NOT NULL, " +
-        "password VARCHAR(72) NOT NULL, profile_picture text, " +
+        "password VARCHAR(73) NOT NULL, profile_picture text, " +
         "gallery text [], tasks text [])");
 
     await client.end();
@@ -83,7 +83,16 @@ export async function appendToArray(newGalleryImg: string, username: string) {
         await client.end();
     }
 }
-
+function comparePassword(password: string, storedPassword: string) {
+    bcrypt.compare(password, storedPassword)
+        .then(result => {
+            console.log(result)
+            return result;
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
 export async function checkPassword(username: string, password: string) {
     const client = new pg.Client(connectionUrl);
     client.connect((error) => {
@@ -94,19 +103,28 @@ export async function checkPassword(username: string, password: string) {
         const res = await client.query("SELECT password FROM public.users " +
             "WHERE(username='" + username + "')");
 
-        bcrypt.compare(password, res.rows[0].password)
-            .then(result => {
-                return result
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        return comparePassword(password, res.rows[0].password)
+
+        // .then(result => {
+        //     return result
+        // })
+        // .catch(err => {
+        //     console.log(err)
+        // })
 
     } catch (error) {
         console.log("Database error: " + error);
     } finally {
         await client.end();
     }
+    /*
+        let valid = await comparePassword(password, res.rows[0].password);
+        return valid;
+    } catch (error) {
+        console.log("Database error: " + error);
+    } finally {
+        await client.end();
+    }*/
 }
 
 export async function checkLogin(username: string, password: string) {

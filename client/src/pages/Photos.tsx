@@ -3,15 +3,16 @@ import Photo from "../components/Photo";
 import styles from "../styles/photo.module.css";
 import { Link } from "react-router-dom";
 
-interface Props {
-    callback?: Function
-}
-/* Photo gallery page functional component; allows user to view photos 
-that they have uploaded to their account and add more photos */
+/**
+ * Photo gallery page functional component; allows user to view photos 
+ * that they have uploaded to their account and add more photos
+ * @returns React component
+ */
 function Photos() {
     const [photos, setPhotos] = useState(Array<string>); // test images, will be removed later
     const [uploadCheck, setUploadCheck] = useState(false);
 
+    /* set photos array on page load */
     useEffect(() => {
         let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
 
@@ -21,13 +22,14 @@ function Photos() {
         setPhotos(Object.values(photosJson));
     }, []);
 
+    /* set photos array on uploadCheck */
     useEffect(() => {
         let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
 
         for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
             photosJson[idx] = "";
         }
-        console.log(photosJson)
+
         setPhotos(Object.values(photosJson));
         setUploadCheck(false);
     }, [uploadCheck]);

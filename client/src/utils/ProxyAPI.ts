@@ -157,15 +157,7 @@ export function login(username: string, password: string, setLoginData: Function
 
 export function register(username: string, email: string,
     password: string, imgPath: string, setRegisterStatus: Function) {
-    const formData = new FormData();
-    /*
-        formData.append('username', username);
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('uploadedPhoto', imageBlob);
-    */
 
-    //console.log(formData)
     fetch(host + "/register", {
         method: 'POST',
         headers: {

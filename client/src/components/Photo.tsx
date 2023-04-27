@@ -40,7 +40,6 @@ function Photo(props: PhotoProps) {
                 props.addImg == true && !newSrc ?
 
                     <ImageUploader callback={setNewSrc} page={props.page} />
-                    //<button>+</button>
 
                     :
                     /* if it is not an 'upload image' div, check whether

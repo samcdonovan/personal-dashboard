@@ -7,8 +7,12 @@ import Photo from '../components/Photo';
 import { getWeather, getClothesData, getNews } from '../utils/ProxyAPI';
 import styles from "../styles/dashboard.module.css";
 
-/* Main Dashboard page functional component; displays the 6 different widgets,
-a welcome message and the users profile picture */
+/**
+ * Main Dashboard page functional component; displays 6 different widgets,
+ * a welcome message and the users profile picture
+ * 
+ * @returns React functional component
+ */
 function Dashboard() {
 
     const [weather, setWeather] = useState({
@@ -32,6 +36,7 @@ function Dashboard() {
         article: ''
     });
 
+    /* retrieve username and password from localStorage */
     const user = JSON.parse(localStorage.getItem('user') || '{}').username;
     const profilePicture = JSON.parse(localStorage.getItem('user') || '{}').profilePicture;
 

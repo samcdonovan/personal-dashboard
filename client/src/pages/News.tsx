@@ -25,6 +25,8 @@ function News() {
             <h1 className="page-title">News</h1>
             <div className="content">
                 <h1 className={styles["news-title"]}>{title}</h1>
+
+                {/* dangerouslySetInnerHTML with the article data #*/}
                 <div className={styles["news-div"]} dangerouslySetInnerHTML={{ __html: article }}>
                 </div>
             </div>

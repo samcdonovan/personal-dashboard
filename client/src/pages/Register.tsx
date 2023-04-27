@@ -5,8 +5,11 @@ import ImageUploader from '../components/ImageUploader';
 import styles from "../styles/loginRegister.module.css";
 import Photo from '../components/Photo';
 
-/* Register page functional component; allows user to register an
-account for the dashboard */
+/**
+ * Register page functional component; allows user to register an
+ * account for the dashboard
+ * @returns React component
+ */
 function Register() {
 
     const [username, setUsername] = useState("");
@@ -16,6 +19,10 @@ function Register() {
     const [imgPath, setImgPath] = useState("");
     const [registerStatus, setRegisterStatus] = useState(0);
 
+    /**
+     * Handles register form submission
+     * @param event Event that triggered the submission
+     */
     function handleSubmit(event: any) {
         event.preventDefault();
 
@@ -28,16 +35,12 @@ function Register() {
         }
     }
 
+    /* alert user if registration was successful */
     useEffect(() => {
-
         if (registerStatus === 201) {
             alert('Success!');
         }
     }, [registerStatus]);
-
-    useEffect(() => {
-        console.log(imgPath)
-    }, [imgPath]);
 
     return (
         <div>
@@ -76,6 +79,7 @@ function Register() {
                     />
                 </div>
 
+                {/* profile picture upload container. If the user uploads a photo, it will be displayed here */}
                 <div className={styles["upload-register"]}>
                     {imgPath === '' ?
                         <ImageUploader callback={setImgPath} page="register" />

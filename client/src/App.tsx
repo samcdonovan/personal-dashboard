@@ -14,6 +14,7 @@ function App() {
 
       <BrowserRouter>
         <Routes>
+          {/* routes for all pages on the dashboard site */}
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
