@@ -157,6 +157,10 @@ app.post('/uploadImage', (req: Request, res: Response) => {
     let relativePath: string = __dirname.includes('C:\\Users\\') ? '/client/public' : '';
     relativePath += publicPath;
 
+    if (!__dirname.includes('C:\\Users\\')) {
+        fs.mkdirSync(__dirname + '/images');
+        fs.mkdirSync(__dirname + '/images/tmp/');
+    }
     if (!fs.existsSync(__dirname + relativePath)) {
         fs.mkdirSync(__dirname + relativePath)
     }
