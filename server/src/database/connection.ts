@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import pg from 'pg';
 import path, { parse } from 'path';
+import bcrypt from 'bcrypt';
 
 const __dirname = path.resolve();
 const envPath = __dirname.includes('C:\\Users\\') ? '/server' : '';
@@ -45,11 +46,12 @@ export async function createNewUser(username: string, email: string,
         if (error) console.log(error);
     });
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     try {
-        console.log(username);
-        console.log(pictureLink)
+
         const res = await client.query("INSERT INTO public.users (username, email, password, profile_picture) " +
-            "VALUES('" + username + "', '" + email + "', '" + password + "', '" + pictureLink + "')");
+            "VALUES('" + username + "', '" + email + "', '" + hashedPassword + "', '" + pictureLink + "')");
 
         await client.end();
 
@@ -82,6 +84,31 @@ export async function appendToArray(newGalleryImg: string, username: string) {
     }
 }
 
+export async function checkPassword(username: string, password: string) {
+    const client = new pg.Client(connectionUrl);
+    client.connect((error) => {
+        if (error) console.log(error);
+    });
+
+    try {
+        const res = await client.query("SELECT password FROM public.users " +
+            "WHERE(username='" + username + "')");
+
+        bcrypt.compare(password, res.rows[0].password)
+            .then(result => {
+                return result
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    } catch (error) {
+        console.log("Database error: " + error);
+    } finally {
+        await client.end();
+    }
+}
+
 export async function checkLogin(username: string, password: string) {
 
     const client = new pg.Client(connectionUrl);
@@ -103,10 +130,6 @@ export async function checkLogin(username: string, password: string) {
 
 async function test() {
     await createTable();
-
-    //await createNewUser("test", "test3", "test3");
-
-    await checkLogin("test", "test3");
 }
 
 test();

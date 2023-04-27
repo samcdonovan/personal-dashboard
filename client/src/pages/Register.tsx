@@ -18,13 +18,19 @@ function Register() {
 
     function handleSubmit(event: any) {
         event.preventDefault();
-        register(username, email, password, imgPath, setRegisterStatus);
+
+        if (username === '' || !email || !password || !confirmPassword) {
+            alert("Required field missing!")
+        } else if (password !== confirmPassword) {
+            alert("Passwords do not match!")
+        } else {
+            register(username, email, password, imgPath, setRegisterStatus);
+        }
     }
 
     useEffect(() => {
 
         if (registerStatus === 201) {
-
             alert('Success!');
         }
     }, [registerStatus]);
@@ -45,25 +51,28 @@ function Register() {
                         placeholder="Username"
                         value={username}
                         onChange={(event: any) => { setUsername(event.target.value) }}
-
+                        required
                     />
                     <input
                         type="email"
                         placeholder="Email"
                         value={email}
                         onChange={(event: any) => { setEmail(event.target.value) }}
+                        required
                     />
                     <input
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(event: any) => { setPassword(event.target.value) }}
+                        required
                     />
                     <input
                         type="password"
                         placeholder="Confirm password"
                         value={confirmPassword}
                         onChange={(event: any) => { setConfirmPassword(event.target.value) }}
+                        required
                     />
                 </div>
 

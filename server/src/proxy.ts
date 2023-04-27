@@ -83,7 +83,6 @@ app.get("/team/:team", (req: Request, res: Response) => {
 /* express GET path for BBC news data */
 app.get("/news", (req: Request, res: Response) => {
 
-
     const parser: Parser = new Parser();
     const newsUrl = "https://www.huffingtonpost.co.uk/feeds/index.xml";
     parser.parseURL(newsUrl)
@@ -205,28 +204,35 @@ app.post('/uploadImage', (req: Request, res: Response) => {
 app.post("/login", (req: Request, res: Response) => {
     const credentials = req.body;
 
-    Database.checkLogin(credentials.username, credentials.password)
-        .then((data: any) => {
-            let result = data.length > 0 ? {
-                status: 200,
-                userId: data[0].user_id,
-                username: data[0].username,
-                profile_picture: data[0].profile_picture,
-                gallery: data[0].gallery,
-                tasks: data[0].tasks
-            } : {
-                status: 401
-            }
-            res.send({ result });
-        })
-        .catch((error: any) => {
-            console.log("Login POST request error: " + error);
-        });
+    let valid = Database.checkPassword(credentials.username, credentials.password);
+
+    if (valid) {
+        Database.checkLogin(credentials.username, credentials.password)
+            .then((data: any) => {
+                let result = data.length > 0 ? {
+                    status: 200,
+                    userId: data[0].user_id,
+                    username: data[0].username,
+                    profile_picture: data[0].profile_picture,
+                    gallery: data[0].gallery,
+                    tasks: data[0].tasks
+                } : {
+                    status: 401
+                }
+                res.send({ result });
+            })
+            .catch((error: any) => {
+                console.log("Login POST request error: " + error);
+            });
+    } else {
+        res.send({ status: 401 })
+    }
 });
 
 app.post("/register", (req: Request, res: Response) => {
     const credentials = req.body;
     console.log(req.body)
+
     Database.createNewUser(credentials.username, credentials.email,
         credentials.password, credentials.imgPath)
         .then((data: any) => {

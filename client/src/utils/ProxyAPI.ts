@@ -99,22 +99,8 @@ export function handleImageBlob(event: any, callback: Function) {
     formData.append('uploadedPhoto', photoBlob);
     formData.append("user", "Sam");
     callback(photoBlob);
-    /*
-        fetch(host + '/uploadImage', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                //storePath(data.path, callback);
-                callback(data);
-            })
-            .catch(error => {
-                console.error(error)
-            })
-            */
 }
+
 export function handleImageUpload(event: any, calledFrom: string, callback: Function) {
     const files = event.target.files;
     const formData = new FormData();

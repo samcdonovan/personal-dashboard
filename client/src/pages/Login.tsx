@@ -28,6 +28,8 @@ function Login() {
                     gallery: loginData.gallery, tasks: loginData.tasks
                 }));
             navigate('/dashboard');
+        } else if (loginData.status == 401) {
+            alert("Username or password is incorrect!")
         }
     }, [loginData]);
 
