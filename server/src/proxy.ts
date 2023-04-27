@@ -4,7 +4,6 @@ import cors from 'cors';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import Parser from 'rss-parser';
-import { parse } from 'parse5';
 import fileUpload from 'express-fileupload';
 import path from 'path'; // global install?
 import fs from 'fs';
@@ -49,10 +48,6 @@ app.get("/weather/:lat&:lon", (req: Request, res: Response) => {
 
 /* express GET path for sports team data. Takes one parameter which is the teams name */
 app.get("/team/:team", (req: Request, res: Response) => {
-    // console.log(req.socket.remoteAddress);
-    // console.log(req.headers.host);
-    // let host: string = req.socket.remoteAddress.replace(/^.*:/, '');
-    // console.log(host);
 
     /* use function from Utils.ts to parse the CSV file */
     let dataPath = (req.headers.host.includes("localhost") ? "/server" : "") + "/assets/data/I1.csv";
@@ -61,6 +56,7 @@ app.get("/team/:team", (req: Request, res: Response) => {
         .then((result) => {
             let team: string = req.params.team;
             let matches: Array<Team> = result.filter(function (item: Team) {
+                /* only return data where the winning team is the input team */
                 return (item.HomeTeam == team && item.FTR == "H")
                     || (item.AwayTeam == team && item.FTR == "A");
             }).map(function (item: Team) {
@@ -91,12 +87,14 @@ app.get("/news", (req: Request, res: Response) => {
             let result = data.items[0];
             let article: string;
 
+            /* format article text */
             if (result.content.search("<!-- start relEntries -->") !== -1) {
                 article = (result.content).substring(0, (result.content).search("<!-- start relEntries -->"))
             } else {
                 article = result.content;
             }
 
+            /* format snippet text */
             let snippet: string;
             if (result.contentSnippet.includes("function(")) {
                 snippet = result.contentSnippet.substring(result.contentSnippet.indexOf('");});'), result.contentSnippet.length);
@@ -108,30 +106,6 @@ app.get("/news", (req: Request, res: Response) => {
             res.send({ title: result.title, snippet: snippet, article: article });
         });
 });
-
-function printPost(entry: any) {
-    //let article = document.createElement("article");
-    console.log(entry.link)
-    console.log(entry.h4)
-    console.log(entry.content)
-
-    const p = new DOMParser();
-    const value = p.parseFromString(entry.content, 'text/html');
-    console.log(value)
-    return value;
-    /* link = document.createElement("a");
-     link.setAttribute("href", entry.link);
-     link.setAttribute("target", "_blank");
-   
-     h4 = document.createElement("h4");
-     h4.innerText = entry.title;
-   
-     link.appendChild(h4);
-     article.appendChild(link);
-   
-     blogs = document.getElementById('blog-posts');
-     blogs.appendChild(article);*/
-}
 
 /* express GET path for clothes data */
 app.get("/clothes", (req: Request, res: Response) => {
@@ -170,11 +144,14 @@ app.get("/clothes", (req: Request, res: Response) => {
         })
 });
 
+/* express POST endpoint for uploading an image */
 app.post('/uploadImage', (req: Request, res: Response) => {
     let file: fileUpload.UploadedFile;
     let uploadPath: string;
 
     file = req.files.uploadedPhoto as fileUpload.UploadedFile;
+
+    /* create temp location for file */
     let publicPath: string = '/images/tmp/' + req.body.username;
     let relativePath: string = '/client/public' + publicPath;
 
@@ -189,6 +166,7 @@ app.post('/uploadImage', (req: Request, res: Response) => {
             return res.status(500).send(err);
     });
 
+    /* upload file to imgbox remote hosting */
     imgbox(uploadPath)
         .then((result) => {
             res.send({ path: result.data[0].original_url })
@@ -201,6 +179,7 @@ app.post('/uploadImage', (req: Request, res: Response) => {
         });
 });
 
+/* express POST endpoint for login */
 app.post("/login", (req: Request, res: Response) => {
     const credentials = req.body;
 
@@ -250,32 +229,35 @@ app.post("/login", (req: Request, res: Response) => {
         */
 });
 
+/* express POST endpoint for register */
 app.post("/register", (req: Request, res: Response) => {
     const credentials = req.body;
-    console.log(req.body)
 
+    /* pass credentials into database function */
     Database.createNewUser(credentials.username, credentials.email,
         credentials.password, credentials.imgPath)
         .then((data: any) => {
-            console.log(data);
-            res.send({ data });
+            res.send({ data }); // send back response
         })
         .catch((error: any) => {
             console.log("Register POST request error: " + error);
         });
 });
 
-app.put("/upload", (req: Request, res: Response) => {
+/* express PUT endpoint for general uploads */
+app.put("/updateGallery", (req: Request, res: Response) => {
 
-    Database.appendToArray(req.body.image, req.body.username)
+    /* call database function to add to users gallery */
+    Database.addToGallery(req.body.image, req.body.username)
         .then((data: any) => {
-            console.log(data);
+
             res.send({ data });
         })
         .catch((error: any) => {
             console.log("Upload PUT request error: " + error);
         });
 });
+
 /* listen on port 8080 */
 const PORT = 8080;
 app.listen(PORT, () => {

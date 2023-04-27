@@ -40,6 +40,10 @@ export function getWeather(setWeather: Function) {
     }
 }
 
+/**
+ * Gets clothes data from proxy /clothes endpoint
+ * @param setClothesData Callback function for setting clothes data
+ */
 export function getClothesData(setClothesData: Function) {
     fetch(host + "/clothes")
         .then((res) => res.json())
@@ -48,77 +52,19 @@ export function getClothesData(setClothesData: Function) {
         });
 }
 
-
+/**
+ * Gets news data from proxy /news endpoint
+ * @param setNews Callback function for setting news data
+ */
 export function getNews(setNews: Function) {
     fetch(host + "/news")
         .then((res) => res.json())
         .then((data) => {
-            console.log(data);
-            sessionStorage.setItem('currentArticle', JSON.stringify(data))
+
+            // store article in session storage
+            sessionStorage.setItem('currentArticle', JSON.stringify(data));
             setNews(data);
         });
-}
-
-
-function storePath(path: string) {
-    if (localStorage.getItem('gallery') === null) {
-        localStorage.setItem('gallery', JSON.stringify({ 0: path }))
-    }
-    else {
-        let images = JSON.parse(localStorage.getItem('gallery') || "");
-        images[Object.keys(images).length] = path;
-        console.log(images);
-        localStorage.setItem('gallery', JSON.stringify(images));
-    }
-
-    fetch(host + '/upload', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            image: path,
-            username: JSON.parse(localStorage.getItem('username') || '{}').username
-        })
-    })
-        .then(response => response.json())
-        .then(data => {
-
-        })
-        .catch(error => {
-            console.error(error)
-        })
-}
-
-export function handleImageBlob(event: any, callback: Function) {
-    const files = event.target.files;
-    console.log(files)
-    const formData = new FormData();
-    const photoBlob = new Blob([files[0]], {
-        type: files[0].type
-    })
-
-    formData.append('uploadedPhoto', photoBlob);
-    formData.append("user", "Sam");
-    callback(photoBlob);
-}
-
-export function handleImageUpload(event: any, calledFrom: string, callback: Function) {
-    const files = event.target.files;
-    const formData = new FormData();
-    formData.append('uploadedPhoto', files[0]);
-    formData.append("user", JSON.parse(localStorage.getItem('username') || '{}').username);
-
-    fetch(host + '/uploadImage', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.json())
-        .then(data => {
-            callback(data.path);
-            if (calledFrom === "gallery") storePath(data.path);
-        })
-        .catch(error => {
-            console.error(error)
-        })
 }
 
 /**
@@ -135,8 +81,13 @@ export function searchForTeam(team: string, setData: Function) {
         })
 }
 
+/**
+ * Send login data to proxy /login POST endpoint
+ * @param username User's username
+ * @param password Usaer's password
+ * @param setLoginData Callback functionn for setting users login data
+ */
 export function login(username: string, password: string, setLoginData: Function) {
-    console.log(username + password)
 
     fetch(host + "/login", {
         method: 'POST',
@@ -155,6 +106,14 @@ export function login(username: string, password: string, setLoginData: Function
         })
 }
 
+/**
+ * Send register data to proxy /register POST endpoint
+ * @param username User's username
+ * @param email User's email
+ * @param password User's password
+ * @param imgPath User's profile picture
+ * @param setRegisterStatus Callback to set register status code
+ */
 export function register(username: string, email: string,
     password: string, imgPath: string, setRegisterStatus: Function) {
 
@@ -173,6 +132,71 @@ export function register(username: string, email: string,
         .then(response => response.json())
         .then(data => {
             setRegisterStatus(data.data);
+        })
+        .catch(error => {
+            console.error(error)
+        })
+}
+
+/**
+ * Handles uploading an image through the proxy API
+ * @param event 
+ * @param calledFrom 
+ * @param callback 
+ */
+export function handleImageUpload(event: any, calledFrom: string, callback: Function) {
+    const files = event.target.files;
+    const formData = new FormData();
+
+    /* create form data for sending to POST endpoint */
+    formData.append('uploadedPhoto', files[0]);
+    formData.append("user", JSON.parse(localStorage.getItem('username') || '{}').username);
+
+    fetch(host + '/uploadImage', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            callback(data.path); // set the path through callback
+
+            /* if this was called from the gallery page, store the path in the DB */
+            if (calledFrom === "gallery") storePath(data.path);
+        })
+        .catch(error => {
+            console.error(error)
+        })
+}
+
+/**
+ * Stores image url in localStorage
+ * @param path URL of the image
+ */
+function storePath(path: string) {
+    if (localStorage.getItem('gallery') === null) {
+        /* set gallery in localStorage */
+        localStorage.setItem('gallery', JSON.stringify({ 0: path }))
+    }
+    else {
+        let images = JSON.parse(localStorage.getItem('gallery') || "");
+
+        /* append new image to gallery */
+        images[Object.keys(images).length] = path;
+        localStorage.setItem('gallery', JSON.stringify(images));
+    }
+
+    /* update the users gallery in the database */
+    fetch(host + '/updateGallery', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            image: path,
+            username: JSON.parse(localStorage.getItem('username') || '{}').username
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+
         })
         .catch(error => {
             console.error(error)

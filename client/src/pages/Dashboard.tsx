@@ -98,7 +98,7 @@ function Dashboard() {
                         <p className={styles["inner-title"]}>Use this widget to <br />search for a team!</p>
                     }
                 </Widget>
-                <Widget to="/dashboard/photos" title="Photos">
+                <Widget to="/dashboard/gallery" title="Photos">
                     <div className={styles["photo-widget"]}>
                         {photos.map(function (path: string, id: number) {
 
