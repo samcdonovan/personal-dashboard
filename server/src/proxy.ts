@@ -191,9 +191,10 @@ app.post('/uploadImage', (req: Request, res: Response) => {
 app.post("/login", (req: Request, res: Response) => {
     const credentials = req.body;
 
-    /* retrieve login data from DB */
-    Database.login(credentials.username, credentials.password)
-        .then((data: any) => {
+    Database.checkPassword(credentials.username, credentials.password)
+        .then(function (data: any) {
+
+            /* if the login was successful, data will be populated */
             let result = data.length > 0 ? {
                 status: 200,
                 userId: data[0].user_id,

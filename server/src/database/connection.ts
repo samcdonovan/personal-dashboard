@@ -56,11 +56,13 @@ export async function createNewUser(username: string, email: string,
         if (error) console.log(error);
     });
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     try {
 
         /* run insert query */
         const res = await client.query("INSERT INTO public.users (username, email, password, profile_picture) " +
-            "VALUES('" + username + "', '" + email + "', '" + password + "', '" + pictureLink + "')");
+            "VALUES('" + username + "', '" + email + "', '" + hashedPassword + "', '" + pictureLink + "')");
 
         await client.end();
 
@@ -70,6 +72,71 @@ export async function createNewUser(username: string, email: string,
         return 409; // query failur
     } finally {
         await client.end();
+    }
+}
+/**
+ * Checks that the input password matches the one found in the DB. Does this 
+ * by using the bcrypt compare function
+ * @param username User's username
+ * @param password Inputted password
+ * @returns The result of a login check
+ */
+export async function checkPassword(username: string, password: string) {
+    const client = new pg.Client(connectionUrl);
+    client.connect((error) => {
+        if (error) console.log(error);
+    });
+
+    try {
+
+        const res = await client.query("SELECT password FROM public.users " +
+            "WHERE username='" + username + "'");
+
+        /* use bcrypt to compare the plain-text inputted password 
+        against the hashed password in the database */
+        return bcrypt.compare(password, res.rows[0].password)
+            .then(result => {
+                /* send results to login function */
+                return login(username, result);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    } catch (error) {
+        console.log("Database error: " + error);
+    } finally {
+        await client.end();
+    }
+}
+
+/**
+ * Uses users credentials to log them in
+ * 
+ * @param username Username of the user
+ * @param isValid Check if the users credentials are valid
+ * @returns Rows of data returned from query
+ */
+export async function login(username: string, isValid: boolean) {
+    if (!isValid) return []; // if they're not valid return empty array
+    else {
+        const client = new pg.Client(connectionUrl);
+        client.connect((error) => {
+            if (error) console.log(error);
+        });
+
+        try {
+
+            /* run select query on users table */
+            const res = await client.query("SELECT user_id, username, profile_picture, gallery, tasks FROM public.users " +
+                "WHERE(username='" + username + "')");
+
+            return res.rows;
+        } catch (error) {
+            console.log("Database error: " + error);
+        } finally {
+            await client.end();
+        }
     }
 }
 
@@ -95,84 +162,6 @@ export async function addToGallery(newGalleryImg: string, username: string) {
     } catch (error) {
         console.log("Database error: " + error);
         return 400;
-    } finally {
-        await client.end();
-    }
-}
-
-/**
- * Compare hash password using bcrypt
- * @param password The input password
- * @param storedPassword Password store in DB
- */
-function comparePassword(password: string, storedPassword: string) {
-    bcrypt.compare(password, storedPassword)
-        .then(result => {
-            console.log(result)
-            return result;
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
-
-/**
- * Checks that the input password matches the one found in the DB
- * @param username 
- * @param password 
- * @returns 
- */
-export async function checkPassword(username: string, password: string) {
-    const client = new pg.Client(connectionUrl);
-    client.connect((error) => {
-        if (error) console.log(error);
-    });
-
-    try {
-        /* run select query on users table */
-        const res = await client.query("SELECT password FROM public.users " +
-            "WHERE(username='" + username + "')");
-
-        return comparePassword(password, res.rows[0].password);
-
-    } catch (error) {
-        console.log("Database error: " + error);
-    } finally {
-        await client.end();
-    }
-    /*
-        let valid = await comparePassword(password, res.rows[0].password);
-        return valid;
-    } catch (error) {
-        console.log("Database error: " + error);
-    } finally {
-        await client.end();
-    }*/
-}
-
-/**
- * Uses users credentials to log them in
- * 
- * @param username Username of the user
- * @param password Users password
- * @returns Rows of data returned from query
- */
-export async function login(username: string, password: string) {
-
-    const client = new pg.Client(connectionUrl);
-    client.connect((error) => {
-        if (error) console.log(error);
-    });
-
-    try {
-        //const hashedPassword = await bcrypt.hash(password, 10);
-        /* run select query on users table */
-        const res = await client.query("SELECT user_id, username, profile_picture, gallery, tasks FROM public.users " +
-            "WHERE(username='" + username + "' AND password='" + password + "')");
-
-        return res.rows;
-    } catch (error) {
-        console.log("Database error: " + error);
     } finally {
         await client.end();
     }
