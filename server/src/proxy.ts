@@ -157,20 +157,15 @@ app.post('/uploadImage', (req: Request, res: Response) => {
     let relativePath: string = __dirname.includes('C:\\Users\\') ? '/client/public' : '';
     relativePath += publicPath;
 
+    /* add /images/tmp to the Render filesystem */
     if (!__dirname.includes('C:\\Users\\')) {
         fs.mkdirSync(__dirname + '/images');
         fs.mkdirSync(__dirname + '/images/tmp/');
     }
+
     if (!fs.existsSync(__dirname + relativePath)) {
         fs.mkdirSync(__dirname + relativePath)
     }
-
-    fs.readdirSync(__dirname).forEach(file => {
-        console.log(file);
-    });
-    fs.readdirSync(__dirname + relativePath).forEach(file => {
-        console.log(file);
-    });
 
     uploadPath = __dirname + relativePath + "/" + file.name;
 

@@ -1,5 +1,4 @@
 import filesystem from 'fs';
-import { parse } from 'csv-parse';
 import csv from 'csv-parser';
 
 /**
