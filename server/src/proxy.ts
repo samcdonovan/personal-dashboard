@@ -152,7 +152,7 @@ app.post('/uploadImage', (req: Request, res: Response) => {
     file = req.files.uploadedPhoto as fileUpload.UploadedFile;
 
     /* create temp location for file */
-    let publicPath: string = '/images/tmp/' + req.body.username;
+    let publicPath: string = '/images/tmp/' + req.body.user;
 
     let relativePath: string = __dirname.includes('C:\\Users\\') ? '/client/public' : '';
     relativePath += publicPath;
@@ -160,6 +160,13 @@ app.post('/uploadImage', (req: Request, res: Response) => {
     if (!fs.existsSync(__dirname + relativePath)) {
         fs.mkdirSync(__dirname + relativePath)
     }
+
+    fs.readdirSync(__dirname).forEach(file => {
+        console.log(file);
+    });
+    fs.readdirSync(__dirname + relativePath).forEach(file => {
+        console.log(file);
+    });
 
     uploadPath = __dirname + relativePath + "/" + file.name;
 

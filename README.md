@@ -2,6 +2,7 @@
 <h1 align="center">Personal Dashboard</h1>
 
 ---
+<h1>To be updated!</h1>
 
 ## Table of Contents
 - [Instructions](#instructions)
@@ -12,31 +13,10 @@
 - [Author](#author)
 
 ---
-## Instructions<a name = "instructions"></a>
-Any instructions prefixed with '>' are to be run in the command line.
-### Installation
-The below commands will clone the repository in your current working directory and then cd (change directory) into root directory of the project.
-
-```
-> git clone https://github.com/samcdonovan/personal-dashboard
-> cd round-up-ts
-```
-Then the node_modules for the root directory and the client directory need to be installed. To do so, run the following command (while in the root directory):
-
-```
-> npm install
-```
-In the root package.json, I have included a "postinstall" script which will run the npm install command for the client directory after the root directory has finished installing its packages. After all node modules are installed, the project is ready to run!
-
-### Running the WebApp
-Once the npm installation has finished, you can start the WebApp with the following command:
-```
-> npm run dev
-```
-Using [concurrently](https://www.npmjs.com/package/concurrently), this command will start both the proxy backend server and the React frontend app simultaneously, and will automatically open the page in localhost:3000.
-
----
 ## About<a name = "about"></a>
+The public URL for this website is [https://personal-dashboard-x8hx.onrender.com/](https://personal-dashboard-x8hx.onrender.com/).
+
+Overall, all of the functionality is complete as well as the styling. There are a few things that I would have liked to add but unfortunately run out of time.
 
 ---
 ## Libraries and tools<a name = "built_using"></a>
