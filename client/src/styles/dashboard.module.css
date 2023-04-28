@@ -39,7 +39,7 @@
 
 .chart-container {
     position: relative;
-    width: 60%;
+    width: inherit;
     margin: auto;
     padding: 0;
 }
@@ -51,27 +51,38 @@
 
 .weather-container {
     text-align: center;
+    padding: 0;
 }
 
-.weather-info img {
-    position: relative;
-    width: 60%;
-    float: left;
+.weather-info {
     margin: 0;
-    top: -35px;
 }
 
-.weather-info p {
+.weather-icon {
+    float: left;
+}
+
+.weather-icon img {
+    width: 100%;
+}
+
+.weather-temp {
     float: right;
     font-size: 1.5rem;
 }
 
 .location {
-    position: relative;
+    position: static;
+    width: inherit;
+    height: auto;
     margin: 0;
     text-align: center;
     font-size: 1.6rem;
-    top: -50px;
+}
+
+.location p {
+    margin: auto;
+    width: fit-content;
 }
 
 .task-container input[type="text"] {

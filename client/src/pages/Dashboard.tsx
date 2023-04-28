@@ -72,10 +72,16 @@ function Dashboard() {
                     {weather.status !== 404 ?
                         <div className={styles["weather-container"]}>
                             <div className={styles["weather-info"]}>
-                                <img src={weather.icon} />
-                                <p>{weather.temp} <br />degrees</p>
+                                <div className={styles["weather-icon"]}>
+                                    <img src={weather.icon} />
+                                </div>
+                                <div className={styles["weather-temp"]}>
+                                    <p>{weather.temp} <br />degrees</p>
+                                </div>
                             </div>
-                            <p className={styles["location"]}>{weather.location}</p>
+                            <div className={styles["location"]}>
+                                <p>{weather.location}</p>
+                            </div>
                         </div>
                         :
                         <div>
@@ -161,6 +167,7 @@ function Dashboard() {
                                     }
                                 ]
                             }} options={{
+                                maintainAspectRatio: false,
                                 plugins: {
                                     legend: {
                                         display: false
