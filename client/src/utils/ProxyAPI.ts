@@ -140,9 +140,9 @@ export function register(username: string, email: string,
 
 /**
  * Handles uploading an image through the proxy API
- * @param event 
- * @param calledFrom 
- * @param callback 
+ * @param event The event that called the image upload
+ * @param calledFrom Where the function was called from
+ * @param callback Callback function to set the path of the image
  */
 export function handleImageUpload(event: any, calledFrom: string, callback: Function, setIsLoading: Function) {
 

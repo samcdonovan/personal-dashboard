@@ -68,10 +68,22 @@
     height: 100%;
     width: 85%;
     padding: 0;
+    padding-bottom: 50px;
     display: grid;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto auto;
-    grid-gap: 2rem;
+    grid-gap: 3rem;
     margin: auto;
     justify-content: space-evenly;
+}
+
+.delete-btn {
+    float: right;
+    background-color: rgb(255, 228, 92);
+    font-size: 1.2rem;
+    border-radius: 15px;
+    position: relative;
+    margin-bottom: 20px;
+    width: 100px;
+    cursor: pointer;
 }

@@ -11,11 +11,13 @@ import { Link } from "react-router-dom";
 function Photos() {
     const [photos, setPhotos] = useState(Array<string>); // test images, will be removed later
     const [uploadCheck, setUploadCheck] = useState(false);
+    const [deleteCheck, setDeleteCheck] = useState(false);
 
     /* set photos array on page load */
     useEffect(() => {
         let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
-
+        console.log("abse")
+        console.log(photosJson)
         for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
             photosJson[idx] = "";
         }
@@ -24,15 +26,22 @@ function Photos() {
 
     /* set photos array on uploadCheck */
     useEffect(() => {
-        let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
 
-        for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
-            photosJson[idx] = "";
+        if (uploadCheck || deleteCheck) {
+            let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
+
+            for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
+                photosJson[idx] = "";
+            }
+            console.log(uploadCheck + " " + deleteCheck)
+            console.log(photos)
+            console.log(photosJson)
+
+            setPhotos(Object.values(photosJson));
+            setDeleteCheck(false);
+            setUploadCheck(false);
         }
-
-        setPhotos(Object.values(photosJson));
-        setUploadCheck(false);
-    }, [uploadCheck]);
+    }, [uploadCheck, deleteCheck]);
 
     return (
         <div>
@@ -44,13 +53,16 @@ function Photos() {
 
             <div className={styles["gallery"]}>
                 {photos.map(function (path: string, id: number) {
+                    console.log(path + " " + id + " " + !path)
 
                     let addImg = false;
 
                     /* check if the image is not empty */
                     if (!path) {
+
                         /* check if this is the first image, or if the previous image isn't empty */
                         if (id == 0 || photos[id - 1]) {
+                            console.log(id)
                             addImg = true;
                         }
                     }
@@ -59,10 +71,12 @@ function Photos() {
                     the 'upload image' button will be displayed instead of an empty box */
                     return <Photo
                         key={id}
+                        id={id}
                         size="large"
                         addImg={addImg}
                         src={path}
-                        callback={setUploadCheck}
+                        uploadCheck={setUploadCheck}
+                        deleteCheck={setDeleteCheck}
                         page={"gallery"}
                     />;
                 })}

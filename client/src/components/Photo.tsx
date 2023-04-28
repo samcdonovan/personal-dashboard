@@ -4,10 +4,12 @@ import styles from '../styles/photo.module.css';
 
 /* Interface for Photo component props */
 interface PhotoProps {
+    id?: number,
     size: string,
     src?: string,
     addImg?: boolean,
-    callback?: Function,
+    uploadCheck?: Function,
+    deleteCheck?: Function,
     page: string
 }
 
@@ -19,14 +21,31 @@ interface PhotoProps {
  */
 function Photo(props: PhotoProps) {
     const [newSrc, setNewSrc] = useState("");
-    const [currentSrc, setCurrentSrc] = useState<string>();
+
+    function deleteImage(event: any, galleryIdx: number) {
+        event.preventDefault();
+        let images = JSON.parse(localStorage.getItem('gallery') || "");
+
+        /* append new image to gallery */
+        images[galleryIdx] = '';
+        for (let idx = galleryIdx + 1; idx < 6; idx++) {
+            images[idx - 1] = images[idx];
+        }
+        //console.log(images);
+        localStorage.setItem('gallery', JSON.stringify(images));
+        if (props.deleteCheck) props.deleteCheck(true);
+    }
+
 
     useEffect(() => {
-        if (!newSrc) setCurrentSrc(props.src);
-    }, [currentSrc]);
+        console.log(props)
+    }, []);
+
 
     useEffect(() => {
-        if (props.callback) props.callback(true);
+        console.log("new " + newSrc + " " + !newSrc + " " + props.src !== null)
+
+        if (props.uploadCheck) props.uploadCheck(true);
     }, [newSrc]);
 
     return (
@@ -35,8 +54,8 @@ function Photo(props: PhotoProps) {
             {/* set size of the div depending on the size prop */}
 
             {
-                /* check whether the current photo should 
-                display the upload image button */
+                /* check whether the current photo should
+            display the upload image button */
                 props.addImg == true && !newSrc ?
 
                     <ImageUploader callback={setNewSrc} page={props.page} />
@@ -50,8 +69,19 @@ function Photo(props: PhotoProps) {
                         <div></div>
                         :
 
-                        /* otherwise display the image */
-                        <img className={styles[props.size + "-img"]} src={props.src} />
+                        <div>
+                            {/* otherwise display the image */}
+                            <img className={styles[props.size + "-img"]} src={props.src} />
+
+                            {props.page === "gallery" ?
+                                props.src !== '' ?
+                                    <button className={styles["delete-btn"]} onClick={(event) => {
+                                        console.log(props.id)
+                                        if (props.id !== undefined) deleteImage(event, props.id)
+                                    }}>Delete</button>
+                                    : null
+                                : null}
+                        </div>
             }
 
         </div>
