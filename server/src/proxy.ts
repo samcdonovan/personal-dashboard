@@ -103,6 +103,7 @@ app.get("/news", (req: Request, res: Response) => {
                 snippet = result.contentSnippet.substring(0, (result.contentSnippet.indexOf('.')));
             }
 
+            snippet.length > 100 ? snippet = snippet.substring(0, 100) + "..." : "";
             res.send({ title: result.title, snippet: snippet, article: article });
         });
 });

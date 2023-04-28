@@ -1,4 +1,6 @@
-.news-title {}
+.news-title {
+    font-size: 1.3rem;
+}
 
 .news-div {
     text-align: justify;
