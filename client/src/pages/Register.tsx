@@ -19,6 +19,11 @@ function Register() {
     const [imgPath, setImgPath] = useState("");
     const [registerStatus, setRegisterStatus] = useState(0);
 
+    /**
+     * Simple email validation using regex
+     * @param email Email input value
+     * @returns Boolean for if the email is valid or not
+     */
     function validateEmail(email: string) {
         return String(email)
             .toLowerCase()
@@ -27,8 +32,16 @@ function Register() {
             );
     };
 
+    /**
+     * Simple password validation
+     * 
+     * @param password Password input value
+     * @param confirmPassword Confirm password input value
+     * @returns Boolean for if password is valid or not
+     */
     function validatePassword(password: string, confirmPassword: string) {
         let check = false;
+
         if (password.length < 8) {
             alert("Password must be at least 8 characters long!");
         } else if (password.search(/[a-z]/) < 0) {
@@ -44,6 +57,7 @@ function Register() {
         } else {
             check = true;
         }
+
         return check;
     }
     /**

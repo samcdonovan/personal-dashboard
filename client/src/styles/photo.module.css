@@ -24,6 +24,10 @@
     background-color: white;
 }
 
+.small-img img {
+    border: none;
+}
+
 .upload-gallery, .upload-register {
     display: block;
     position: relative;
