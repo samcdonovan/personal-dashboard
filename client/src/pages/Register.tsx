@@ -26,24 +26,44 @@ function Register() {
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             );
     };
+
+    function validatePassword(password: string, confirmPassword: string) {
+        let check = false;
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters long!");
+        } else if (password.search(/[a-z]/) < 0) {
+            alert("Password must contain at least one lowercase letter!");
+        } else if (password.search(/[A-Z]/) < 0) {
+            alert("Password must contain at least one uppercase letter!");
+        } else if (password.search(/[0-9]/) < 0) {
+            alert("Password must contain at least one number!");
+        } else if (password.search(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g) < 0) {
+            alert("Password must contain at least one special character!");
+        } else if (password !== confirmPassword) {
+            alert("Passwords do not match!")
+        } else {
+            check = true;
+        }
+        return check;
+    }
     /**
      * Handles register form submission
      * @param event Event that triggered the submission
      */
     function handleSubmit(event: any) {
         event.preventDefault();
-        const emailRegex = new RegExp("/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/");
 
         if (username === '' || !email || !password || !confirmPassword) {
             alert("Required field missing!")
-        } else if (password !== confirmPassword) {
-            alert("Passwords do not match!")
+        } else if (!validatePassword(password, confirmPassword)) {
+            console.log("Password is not valid")
         } else if (!validateEmail(email)) {
             alert(email + " is not a valid email address!")
         } else {
             register(username, email, password, imgPath, setRegisterStatus);
         }
     }
+
 
     /* alert user if registration was successful */
     useEffect(() => {
