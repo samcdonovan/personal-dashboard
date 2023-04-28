@@ -19,17 +19,27 @@ function Register() {
     const [imgPath, setImgPath] = useState("");
     const [registerStatus, setRegisterStatus] = useState(0);
 
+    function validateEmail(email: string) {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
     /**
      * Handles register form submission
      * @param event Event that triggered the submission
      */
     function handleSubmit(event: any) {
         event.preventDefault();
+        const emailRegex = new RegExp("/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/");
 
         if (username === '' || !email || !password || !confirmPassword) {
             alert("Required field missing!")
         } else if (password !== confirmPassword) {
             alert("Passwords do not match!")
+        } else if (!validateEmail(email)) {
+            alert(email + " is not a valid email address!")
         } else {
             register(username, email, password, imgPath, setRegisterStatus);
         }
@@ -39,6 +49,8 @@ function Register() {
     useEffect(() => {
         if (registerStatus === 201) {
             alert('Success!');
+        } else if (registerStatus == 409) {
+            alert('User ' + username + ' already exists!')
         }
     }, [registerStatus]);
 

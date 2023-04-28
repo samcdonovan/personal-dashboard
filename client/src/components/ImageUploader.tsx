@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { handleImageUpload } from "../utils/ProxyAPI";
 import styles from "../styles/photo.module.css";
 
@@ -18,17 +18,23 @@ interface Props {
  */
 function ImageUploader(props: Props) {
 
+    const [isLoading, setIsLoading] = useState(true);
+
     return (
         <div>
+            {/*isLoading ?
+                <div className={"loading-container " + styles["upload-" + props.page]}>
+
+                </div>
+    : null*/}
 
             <div>
-
                 {/* hidden file input field */}
                 <input
                     id="upload-input"
                     type="file"
                     name="image-upload"
-                    onChange={(event) => { handleImageUpload(event, props.page, props.callback) }}
+                    onChange={(event) => { handleImageUpload(event, props.page, props.callback, setIsLoading) }}
                     hidden={true}
                 />
 

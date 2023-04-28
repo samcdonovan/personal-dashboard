@@ -144,7 +144,9 @@ export function register(username: string, email: string,
  * @param calledFrom 
  * @param callback 
  */
-export function handleImageUpload(event: any, calledFrom: string, callback: Function) {
+export function handleImageUpload(event: any, calledFrom: string, callback: Function, setIsLoading: Function) {
+
+    setIsLoading(true);
     const files = event.target.files;
     const formData = new FormData();
 
@@ -162,6 +164,7 @@ export function handleImageUpload(event: any, calledFrom: string, callback: Func
 
             /* if this was called from the gallery page, store the path in the DB */
             if (calledFrom === "gallery") storePath(data.path);
+            setIsLoading(false);
         })
         .catch(error => {
             console.error(error)
