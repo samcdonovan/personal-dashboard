@@ -134,7 +134,7 @@ function Register() {
                     }
                 </div>
                 <div className={styles["lr-btn-container"]}>
-                    <button className={styles["lr-btn"]} type="submit">Register</button>
+                    <button className="yellow-btn btn-lg" type="submit">Register</button>
 
                     {/* link back to login page for if they already have an account */}
                     <p className={styles["sign-up"]}>Already have an account? <Link to="/"><span className="highlighted">Sign in</span></Link></p>

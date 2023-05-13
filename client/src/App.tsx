@@ -10,13 +10,6 @@ import News from "./pages/News";
 import Protected from "./components/Protected";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useMemo(() => {
-    if (localStorage.getItem('credentials')) {
-      setIsLoggedIn(true);
-    }
-  }, [])
 
   return (
     <div className="App">
@@ -27,23 +20,23 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={
-            <Protected isLoggedIn={isLoggedIn}>
+            <Protected >
               <Dashboard />
             </Protected>} />
           <Route path="/dashboard/gallery" element={
-            <Protected isLoggedIn={isLoggedIn}>
+            <Protected >
               <Photos />
             </Protected>} />
           <Route path="/dashboard/tasks" element={
-            <Protected isLoggedIn={isLoggedIn}>
+            <Protected >
               <Tasks />
             </Protected>} />
           <Route path="/dashboard/sports" element={
-            <Protected isLoggedIn={isLoggedIn}>
+            <Protected >
               <Sports />
             </Protected>} />
           <Route path="/dashboard/news" element={
-            <Protected isLoggedIn={isLoggedIn}>
+            <Protected >
               <News />
             </Protected>} />
         </Routes>

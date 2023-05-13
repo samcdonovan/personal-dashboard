@@ -12,12 +12,19 @@ interface Props extends React.PropsWithChildren {
  * @param props The component props for a Photo component
  * @returns React component
  */
-function Protected(props: Props) {
+function Protected(props: React.PropsWithChildren) {
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+    React.useMemo(() => {
+        if (localStorage.getItem('credentials')) {
+            setIsLoggedIn(true);
+        }
+    }, [])
 
     return (
 
         <>
-            {props.isLoggedIn ?
+            {isLoggedIn ?
                 <div>
                     {props.children}
                 </div>

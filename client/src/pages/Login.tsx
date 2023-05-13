@@ -62,7 +62,7 @@ function Login() {
                     />
                 </div>
                 <div className={styles["lr-btn-container"]}>
-                    <button className={styles["lr-btn"]} type="submit">Login</button>
+                    <button className="yellow-btn btn-lg" type="submit">Login</button>
 
                     {/* link to the Register page */}
                     <p className={styles["sign-up"]}>New to the challenge? <Link to="/register"><span className="highlighted">Sign up</span></Link></p>

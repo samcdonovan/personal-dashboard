@@ -10,12 +10,17 @@
     justify-content: space-evenly;
 }
 
-.profile-picture {
+.profile-box {
     position: absolute;
     width: 140px;
     height: 140px;
     margin-left: 20px;
     z-index: 2;
+}
+
+.profile-picture {
+    width: 100px;
+    height: 100px;
 }
 
 .inner-title {

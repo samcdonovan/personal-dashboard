@@ -3,15 +3,6 @@
     margin-bottom: 0;
 }
 
-.lr-btn {
-    background-color: rgb(255, 228, 92);
-    font-size: 1.2rem;
-    border-radius: 150px;
-    width: 250px;
-    height: 50px;
-    cursor: pointer;
-}
-
 .lr-container {
     position: relative;
     height: 650px;

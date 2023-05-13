@@ -6,6 +6,7 @@ import Widget from '../components/Widget';
 import Photo from '../components/Photo';
 import { getWeather, getClothesData, getNews } from '../utils/ProxyAPI';
 import styles from "../styles/dashboard.module.css";
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Main Dashboard page functional component; displays 6 different widgets,
@@ -14,6 +15,13 @@ import styles from "../styles/dashboard.module.css";
  * @returns React functional component
  */
 function Dashboard() {
+
+    const navigate = useNavigate();
+
+    function logout() {
+        localStorage.removeItem("credentials");
+        navigate("/");
+    }
 
     const [weather, setWeather] = useState({
         status: 404,
@@ -64,7 +72,12 @@ function Dashboard() {
 
     return (
         <div>
-            <img className={styles["profile-picture"]} src={profilePicture}></img>
+
+            <div className={styles["profile-box"]}>
+                <img className={styles["profile-picture"]} src={profilePicture}></img>
+                <button className="yellow-btn btn-sm" onClick={logout}>Logout</button>
+            </div>
+
             <h1 className="welcome-message">Good day {user}</h1>
             <div className={"content " + styles.dashboard}>
                 <Widget title="Weather">
