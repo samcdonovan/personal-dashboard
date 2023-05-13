@@ -16,16 +16,20 @@
 ## About<a name = "about"></a>
 The public URL for this website is [https://personal-dashboard-x8hx.onrender.com/](https://personal-dashboard-x8hx.onrender.com/).
 
-Overall, all of the functionality is complete as well as the styling. There are a few things that I would have liked to add but unfortunately ran out of time:
-- Logout functionality
-- ~~Password strength checking and email regex checking~~
-- Better looking popups
-- Blocking access to dashboard if not signed in
-- Testing - Unit testing, API endpoint testing, frontend testing
-- CSS animations
-- Loading animations for slower processes
-- Redux support
-- Code refactoring
+To be updated!
+
+---
+## Future improvements<a name = "improvements"></a>
+
+- [x] ~~Logout functionality~~
+- [x] ~~Password strength checking and email regex checking~~
+- [] Better looking popups
+- [] Blocking access to dashboard if not signed in
+- [] Testing - Unit testing, API endpoint testing, frontend testing
+- [] CSS animations
+- [] Loading animations for slower processes
+- [] Redux support
+- [] Code refactoring
 
 ---
 ## Libraries and tools<a name = "built_using"></a>
