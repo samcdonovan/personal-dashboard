@@ -23,13 +23,13 @@ To be updated!
 
 - [x] ~~Logout functionality~~
 - [x] ~~Password strength checking and email regex checking~~
-- [] Better looking popups
-- [] Blocking access to dashboard if not signed in
-- [] Testing - Unit testing, API endpoint testing, frontend testing
-- [] CSS animations
-- [] Loading animations for slower processes
-- [] Redux support
-- [] Code refactoring
+- [ ] Better looking popups
+- [ ] Blocking access to dashboard if not signed in
+- [ ] Testing - Unit testing, API endpoint testing, frontend testing
+- [ ] CSS animations
+- [ ] Loading animations for slower processes
+- [ ] Redux support
+- [ ] Code refactoring
 
 ---
 ## Libraries and tools<a name = "built_using"></a>
