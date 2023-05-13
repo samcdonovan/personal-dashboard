@@ -1,3 +1,4 @@
+import { parseLocalStorage, updateLocalStorage } from "../utils/LocalStorage";
 
 const host = window.location.hostname == "localhost" ? "http://localhost:8080" : "https://personal-dashboard-proxy.onrender.com";
 
@@ -152,7 +153,7 @@ export function handleImageUpload(event: any, calledFrom: string, callback: Func
 
     /* create form data for sending to POST endpoint */
     formData.append('uploadedPhoto', files[0]);
-    formData.append("user", JSON.parse(localStorage.getItem('username') || '{}').username);
+    formData.append("user", parseLocalStorage('username').username);
 
     fetch(host + '/uploadImage', {
         method: 'POST',
@@ -181,11 +182,13 @@ function storePath(path: string) {
         localStorage.setItem('gallery', JSON.stringify({ 0: path }))
     }
     else {
-        let images = JSON.parse(localStorage.getItem('gallery') || "");
 
-        /* append new image to gallery */
-        images[Object.keys(images).length] = path;
-        localStorage.setItem('gallery', JSON.stringify(images));
+        updateLocalStorage("gallery", path)
+        /* let images = parseLocalStorage('gallery');
+ 
+         images[Object.keys(images).length] = path;
+         localStorage.setItem('gallery', JSON.stringify(images));
+         */
     }
 
     /* update the users gallery in the database */
@@ -194,7 +197,7 @@ function storePath(path: string) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             image: path,
-            username: JSON.parse(localStorage.getItem('username') || '{}').username
+            username: parseLocalStorage('username').username
         })
     })
         .then(response => response.json())

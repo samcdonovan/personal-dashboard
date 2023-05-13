@@ -7,6 +7,7 @@ import Photo from '../components/Photo';
 import { getWeather, getClothesData, getNews } from '../utils/ProxyAPI';
 import styles from "../styles/dashboard.module.css";
 import { useNavigate } from 'react-router-dom';
+import { parseLocalStorage } from "../utils/LocalStorage";
 
 /**
  * Main Dashboard page functional component; displays 6 different widgets,
@@ -49,23 +50,23 @@ function Dashboard() {
     const [profilePicture, setProfilePicture] = useState('');
 
     useEffect(() => {
-        setUser(JSON.parse(localStorage.getItem('credentials') || '{}').username);
-        setProfilePicture(JSON.parse(localStorage.getItem('credentials') || '{}').profilePicture);
+        setUser(parseLocalStorage('credentials').username);
+        setProfilePicture(parseLocalStorage('credentials').profilePicture);
 
         getWeather(setWeather);
 
         ChartJS.register(ArcElement, Tooltip);
         getClothesData(setClothesData);
 
-        let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
+        let photosJson = parseLocalStorage("gallery");
         let currentPhotos = [];
 
         for (let idx = 0; idx < 4; idx++) {
             currentPhotos[idx] = photosJson[idx];
         }
         setPhotos(Object.values(currentPhotos));
-        setTasks(Object.values(JSON.parse(localStorage.getItem("tasks") || '{}')));
-        setTeam(JSON.parse(localStorage.getItem('recent_search') || '{}'));
+        setTasks(Object.values(parseLocalStorage("tasks")));
+        setTeam(parseLocalStorage('recent_search'));
 
         getNews(setNews);
     }, [])

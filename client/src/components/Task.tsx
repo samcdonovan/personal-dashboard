@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/tasks.module.css";
+import { parseLocalStorage, updateLocalStorage } from "../utils/LocalStorage";
 
 /* Simple props interface for Task component */
 interface TaskProps {
@@ -21,19 +22,11 @@ function Task(props: TaskProps) {
     /* These useEffect hooks set the localStorage values for their corresponding states.
     Both hooks are functionally the same */
     useEffect(() => {
-        let tasksJson = JSON.parse(localStorage.getItem("tasks") || '{}');
-        tasksJson[props.id]['task'] = task;
-
-        localStorage.setItem("tasks", JSON.stringify(tasksJson));
-
+        updateLocalStorage("tasks", task, props.id, "task");
     }, [task])
 
     useEffect(() => {
-        let tasksJson = JSON.parse(localStorage.getItem("tasks") || '{}');
-        tasksJson[props.id]['isChecked'] = isChecked;
-
-        localStorage.setItem("tasks", JSON.stringify(tasksJson));
-
+        updateLocalStorage("tasks", isChecked, props.id, "isChecked");
     }, [isChecked])
 
     return (

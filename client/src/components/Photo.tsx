@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ImageUploader from './ImageUploader';
 import styles from '../styles/photo.module.css';
+import { parseLocalStorage, updateLocalStorage } from "../utils/LocalStorage";
 
 /* Interface for Photo component props */
 interface PhotoProps {
@@ -24,23 +25,15 @@ function Photo(props: PhotoProps) {
 
     function deleteImage(event: any, galleryIdx: number) {
         event.preventDefault();
-        let images = JSON.parse(localStorage.getItem('gallery') || "");
 
-        /* append new image to gallery */
-        images[galleryIdx] = '';
+        let images = updateLocalStorage("gallery", "", galleryIdx);
+
         for (let idx = galleryIdx + 1; idx < 6; idx++) {
             images[idx - 1] = images[idx];
         }
-        //console.log(images);
-        localStorage.setItem('gallery', JSON.stringify(images));
+
         if (props.deleteCheck) props.deleteCheck(true);
     }
-
-
-    useEffect(() => {
-        console.log(props)
-    }, []);
-
 
     useEffect(() => {
         console.log("new " + newSrc + " " + !newSrc + " " + props.src !== null)

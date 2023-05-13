@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Photo from "../components/Photo";
 import styles from "../styles/photo.module.css";
 import { Link } from "react-router-dom";
+import { parseLocalStorage } from "../utils/LocalStorage";
 
 /**
  * Photo gallery page functional component; allows user to view photos 
@@ -15,9 +16,8 @@ function Photos() {
 
     /* set photos array on page load */
     useEffect(() => {
-        let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
-        console.log("abse")
-        console.log(photosJson)
+        let photosJson = parseLocalStorage("gallery");
+
         for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
             photosJson[idx] = "";
         }
@@ -28,14 +28,11 @@ function Photos() {
     useEffect(() => {
 
         if (uploadCheck || deleteCheck) {
-            let photosJson = JSON.parse(localStorage.getItem("gallery") || '{}');
+            let photosJson = parseLocalStorage("gallery");
 
             for (let idx = Object.keys(photosJson).length; idx < 6; idx++) {
                 photosJson[idx] = "";
             }
-            console.log(uploadCheck + " " + deleteCheck)
-            console.log(photos)
-            console.log(photosJson)
 
             setPhotos(Object.values(photosJson));
             setDeleteCheck(false);

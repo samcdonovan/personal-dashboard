@@ -21,3 +21,8 @@ type LoginData = {
     gallery?: Array<string>,
     tasks?: Array<string>
 }
+
+type Task = {
+    task: string,
+    isChecked: boolean
+}

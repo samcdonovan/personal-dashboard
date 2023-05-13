@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Task from "../components/Task";
 import styles from "../styles/tasks.module.css";
 import { Link } from "react-router-dom";
+import { parseLocalStorage, updateLocalStorage } from "../utils/LocalStorage";
 
 /**
  * To-do list page functional component; displays current tasks for the user,
@@ -17,19 +18,16 @@ function Tasks() {
      * Adds a task to the 'taskList' state which is displayed on the page
      */
     function addTask() {
-        let id = taskList.length + 1;
 
-        let currentTasks = JSON.parse(localStorage.getItem('tasks') || '{}');
-
-        currentTasks[id - 1] = {};
-        localStorage.setItem('tasks', JSON.stringify(currentTasks));
-        setTaskList(taskList.concat(<Task id={id - 1} value={""} isChecked={false} />));
+        let id = taskList.length;
+        updateLocalStorage("tasks", { task: "", isChecked: false }, id);
+        setTaskList(taskList.concat(<Task id={id} value={""} isChecked={false} />));
     }
 
     /* form the current task list array to display on frontend */
     useEffect(() => {
         let currentList: Array<any> = [];
-        let tasksJson = JSON.parse(localStorage.getItem("tasks") || '{}');
+        let tasksJson = parseLocalStorage("tasks");
 
         for (let idx = 0; idx < Object.keys(tasksJson).length; idx++) {
             currentList.push(<Task key={idx} id={idx} value={tasksJson[idx]['task']} isChecked={tasksJson[idx]['isChecked']} />);
