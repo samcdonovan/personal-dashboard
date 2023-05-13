@@ -43,8 +43,7 @@ function Dashboard() {
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('credentials') || '{}').username);
         setProfilePicture(JSON.parse(localStorage.getItem('credentials') || '{}').profilePicture);
-        console.log(user);
-        console.log(profilePicture);
+
         getWeather(setWeather);
 
         ChartJS.register(ArcElement, Tooltip);
